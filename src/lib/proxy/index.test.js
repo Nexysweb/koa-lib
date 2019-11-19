@@ -2,7 +2,6 @@
 import Proxy from './index';
 import JWT from '../../middleware/jwt';
 
-
 const proxyMiddleware = new Proxy('/crud', {
   hooks: {
     before: {

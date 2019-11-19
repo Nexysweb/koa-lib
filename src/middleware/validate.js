@@ -3,7 +3,7 @@ import bodyParser from 'koa-body';
 import Joi from 'joi';
 
 // TODO: move this to custom validation library
-const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
+export const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
   const path = err.path.join('.');
   let prop = path;
   if (prefix) prop = `${prefix}.${prop}`;
@@ -13,7 +13,7 @@ const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
 }, {});
 
 
-const body = (schema, options={}) => async (ctx, next) => {
+export const body = (schema, options={}) => async (ctx, next) => {
   if (!ctx.request.body) {
     await bodyParser()(ctx, () => {});
   }
@@ -36,13 +36,6 @@ const body = (schema, options={}) => async (ctx, next) => {
 };
 
 // TODO: schema without nesting
-const params = (schema, options={}) => async (ctx, next) => {
+export const params = (schema, options={}) => async (ctx, next) => {
   const { params } = ctx;
-}
-
-// TODO: generator
-export default {
-  formatErrors,
-  body,
-  params
 }
