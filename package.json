@@ -1,5 +1,5 @@
 {
-  "name": "koa-lib",
+  "name": "@nexys/koa-lib",
   "version": "1.0.1",
   "scripts": {
     "test": "rimraf dist/ && jest ",
