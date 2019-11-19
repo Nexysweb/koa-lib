@@ -1,6 +1,6 @@
 // TODO: call requestMiddleware
 import Proxy from './index';
-import JWT from '../middleware/jwt';
+import JWT from '../../middleware/jwt';
 
 
 const proxyMiddleware = new Proxy('/crud', {
