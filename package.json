@@ -5,6 +5,10 @@
   "license": "MIT",
   "dependencies": {
     "@nexys/lib": "^1.4.11",
-    "@nexys/utils": "^3.2.21"
+    "@nexys/utils": "^3.2.21",
+    "http-proxy": "^1.18.0",
+    "koa-body": "^4.1.1",
+    "koa-compose": "^4.1.0",
+    "path-match": "^1.2.4"
   }
 }
