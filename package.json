@@ -9,6 +9,7 @@
     "http-proxy": "^1.18.0",
     "koa-body": "^4.1.1",
     "koa-compose": "^4.1.0",
+    "koa-router": "^7.4.0",
     "path-match": "^1.2.4"
   }
 }
