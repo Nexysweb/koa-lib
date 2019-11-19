@@ -1,0 +1,10 @@
+{
+  "name": "koa-lib",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@nexys/lib": "^1.4.11",
+    "@nexys/utils": "^3.2.21"
+  }
+}
