@@ -1,6 +1,6 @@
 {
   "name": "koa-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "test": "rimraf dist/ && jest ",
     "build": "rimraf dist/ && babel src/ --out-dir dist/;rm dist/*.test.js"
