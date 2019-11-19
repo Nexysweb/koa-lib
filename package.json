@@ -1,9 +1,14 @@
 {
   "name": "koa-lib",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "scripts": {
+    "test": "rimraf dist/ && jest ",
+    "build": "rimraf dist/ && babel src/ --out-dir dist/;rm dist/*.test.js"
+  },
+  "main": "dist/index.js",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "^7.5.5",
     "@nexys/lib": "^1.4.11",
     "@nexys/utils": "^3.2.21",
     "http-proxy": "^1.18.0",
@@ -12,5 +17,21 @@
     "koa-passport": "^4.1.3",
     "koa-router": "^7.4.0",
     "path-match": "^1.2.4"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-minify": "^0.5.1",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0"
   }
 }

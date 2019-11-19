@@ -7,10 +7,9 @@ import pathToRegexp from 'path-match'; // 'path-to-regexp';
 import bodyParser from 'koa-body';
 import compose from 'koa-compose';
 
-import HTTPError from '#lib/error';
-
 import Lib from '@nexys/lib';
 
+const { HTTPError } = Lib;
 
 const pathMatcher = pathToRegexp({
   // path-to-regexp options
