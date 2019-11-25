@@ -2,7 +2,7 @@ import bodyParser from 'koa-body';
 
 import Joi from 'joi';
 
-// TODO: move this to custom validation library
+// TODO: use Lib.Validate
 export const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
   const path = err.path.join('.');
   let prop = path;
@@ -35,7 +35,7 @@ export const body = (schema, options={}) => async (ctx, next) => {
   }
 };
 
-// TODO: schema without nesting
+// TODO: ctx.params validation - schema without nesting
 export const params = (schema, options={}) => async (ctx, next) => {
   const { params } = ctx;
 }

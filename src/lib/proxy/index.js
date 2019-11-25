@@ -7,9 +7,12 @@ import pathToRegexp from 'path-match'; // 'path-to-regexp';
 import bodyParser from 'koa-body';
 import compose from 'koa-compose';
 
-import Lib from '@nexys/lib';
+import { getPassportSession } from '../auth';
 
+import Utils from '@nexys/utils';
+import Lib from '@nexys/lib';
 const { HTTPError } = Lib;
+
 
 const pathMatcher = pathToRegexp({
   // path-to-regexp options
@@ -17,20 +20,6 @@ const pathMatcher = pathToRegexp({
   strict: false,
   end: false,
 });
-
-// TODO: utils
-const removeProp = (obj, prop) => {
-  return Object.keys(obj)
-    .reduce((acc, key) => key !== prop ? ({...acc, [key]: obj[key]}) : acc, {});
-}
-
-const removeProps = (obj, props) => {
-  while (props.length > 0) {
-    obj = removeProp(obj, props.pop());
-  }
-  return obj;
-}
-
 
 class Proxy {
   constructor() {
@@ -71,36 +60,26 @@ class Proxy {
 
   tokenHeaders = (token, headers={}) => ({...headers, 'Authorization': `Bearer ${token}`})
 
-  /*
-  setAuth = (ctx, auth, proxyOpts=false) => {
-    if (auth.basic) {
-      if (proxyOpts) proxyOpts.auth = `${auth.basic.user}:${auth.basic.pass}`; // ({user, pass}) => `${user}:${pass}`;
-      else ctx.auth = {...auth.basic};
-    } else if (auth.token && ctx.session) {
-      const headers = this.tokenHeaders(ctx.session.token, ctx.headers);
-      if (proxyOpts) proxyOpts.headers = headers;
-      ctx.request.headers = headers;
-    }
-  }
-  */
-
-  // TODO: integrate
   setAuth = (ctx, auth, proxyOpts=false) => {
     if (auth.basic) {
       if (proxyOpts) proxyOpts.auth = `${auth.basic.user}:${auth.basic.pass}`; // ({user, pass}) => `${user}:${pass}`;
       else ctx.auth = {...auth.basic};
     }
 
-    if (auth.token) {
-      // NOTE: get token
+    f (auth.token) {
+      const session = getPassportSession(ctx);
       let token = null;
+      // NOTE: get token
       if (typeof auth.token === 'string') {
         token = auth.token;
-      } else if (ctx.session) {
-        token = ctx.session.token;
+      } else if (session) {
+        const session = getPassportSession(ctx); 
+        token = session.token;
       }
 
       if (token != null) {
+        // NOTE: remove basic authentication
+        delete ctx.request.headers['authorization'];
         const headers = this.tokenHeaders(token, ctx.headers);
         if (proxyOpts) proxyOpts.headers = headers;
         ctx.request.headers = headers;
@@ -132,7 +111,7 @@ class Proxy {
   proxyMiddleware = (ctx, options) => {
     this.proxyEvents(options.events);
 
-    const httpProxyOpts = removeProps(options, ['logs', 'rewrite', 'events', 'auth']);
+    const httpProxyOpts = Utils.ds.removeProps(options, ['logs', 'rewrite', 'events', 'auth']);
 
     if (options.auth) {
       this.setAuth(ctx, options.auth, httpProxyOpts);
@@ -190,7 +169,7 @@ class Proxy {
     ctx.payload = body;
 
     if (headers) {
-      ctx.request.headers = removeProps(headers, ['host', 'cookie', 'content-length', 'content-type', 'app-token', 'connection', 'accept-encoding']);
+      ctx.request.headers = Utils.ds.removeProps(headers, ['host', 'cookie', 'content-length', 'content-type', 'app-token', 'connection', 'accept-encoding']);
     }
 
     if (files) {

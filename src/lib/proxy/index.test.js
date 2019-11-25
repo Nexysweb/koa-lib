@@ -1,18 +1,44 @@
-// TODO: call requestMiddleware
-import Proxy from './index';
-import JWT from '../../middleware/jwt';
+import request from 'supertest';
+import { Proxy } from './index';
 
-const proxyMiddleware = new Proxy('/crud', {
+// create proxy middleware
+const proxyMiddleware = new Proxy('/query', {
   hooks: {
     before: {
       fromCtx: (ctx, proxy) => {
-        const { crud: { host, auth } } = ctx.state.user;
-        ctx.target = proxy.targetUrl(host);
-
-        proxy.setAuth(ctx, { basic: auth });
+        // take some environment variables from context
+        // ctx.target = proxy.targetUrl(host);
+        // proxy.setAuth(ctx, auth);
       }
     }
   }
 });
 
-test('test proxy', () => {});
+// create koa app: const app = Koa()
+// app.use(proxyMiddleware)
+
+/*
+describe("standard proxy", () => {
+  test("...", async () => {
+    const response = await request(app)
+      .post("/query")
+      .auth('test', 'test')
+      .field('product', 'test_product')
+      .field('name', 'test_name')
+
+    expect(response.status).toEqual(200);
+    expect(response.type).toEqual("application/json");
+    expect(response.body).toEqual({status: true})
+  });
+
+  test("...", async () => {
+
+  })
+});
+
+describe("proxy with hooks", () => {
+  test("before", async () => {
+
+  })
+})
+*/
