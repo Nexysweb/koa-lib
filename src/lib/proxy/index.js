@@ -15,10 +15,9 @@ const { HTTPError } = Lib;
 
 
 const pathMatcher = pathToRegexp({
-  // path-to-regexp options
   sensitive: false,
   strict: false,
-  end: false,
+  end: false
 });
 
 class Proxy {
@@ -66,7 +65,7 @@ class Proxy {
       else ctx.auth = {...auth.basic};
     }
 
-    f (auth.token) {
+    if (auth.token) {
       const session = getPassportSession(ctx);
       let token = null;
       // NOTE: get token
@@ -134,7 +133,6 @@ class Proxy {
       delete ctx.req.headers.cookie;
 
       ctx.req.url = ctx.url;
-      console.log(httpProxyOpts);
       this.proxy.web(ctx.req, ctx.res, httpProxyOpts, e => {
         console.log(e.toString());
         const status = {
@@ -165,7 +163,6 @@ class Proxy {
     }
 
     const { body, files, headers } = ctx.request;
-
     ctx.payload = body;
 
     if (headers) {
@@ -225,6 +222,10 @@ class Proxy {
     const response = await Lib.Request.call(ctx, resolveResponse);
     // TODO: if resolveResponse: response vs body
 
+    ctx.status = response.status;
+    ctx.body = response.body;
+    // if (response.headers) ctx.set(response.headers);
+
     if (response.error) {
       if (hooks.error) {
         hooks.error(ctx, err);
@@ -234,10 +235,6 @@ class Proxy {
     if (hooks.after) {
       Object.keys(hooks.after).forEach(name => hooks.after[name](ctx, response.body, response));
     }
-
-    ctx.send(response.status, response.body);
-
-    // if (response.headers) ctx.set(response.headers);
 
     const contentDisposition = response.headers && response.headers['content-disposition'];
     if (contentDisposition && contentDisposition.startsWith('attachment')) {
@@ -257,13 +254,12 @@ class Proxy {
     const middleware = async ctx => {
       // TODO: rewrite not needed (url vs originalUrl)
       ctx.prevUrl = ctx.url;
-      // console.log('url', ctx.prevUrl);
-      // console.log('originalUrl', ctx.originalUrl);
 
       if (typeof rewrite === 'function') {
         ctx.url = rewrite(ctx.url, ctx);
       }
 
+      // TODO: error if target missing?
       if (options.target) {
         ctx.target = this.targetUrl(options.target);
       }
