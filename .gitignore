@@ -11,6 +11,7 @@ assets/bower_components
 
 # add locales
 locales/*
+cache/cache.json
 
 # Runtime data
 pids

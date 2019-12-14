@@ -11,7 +11,6 @@ import { getPassportSession } from '../auth';
 
 import Utils from '@nexys/utils';
 import Lib from '@nexys/lib';
-const { HTTPError } = Lib;
 
 
 const pathMatcher = pathToRegexp({
@@ -57,8 +56,6 @@ class Proxy {
     else console.log(`requesting: ${method} - ${ctx.target ? url.resolve(ctx.target, ctx.url) : ctx.url}`);
   }
 
-  tokenHeaders = (token, headers={}) => ({...headers, 'Authorization': `Bearer ${token}`})
-
   setAuth = (ctx, auth, proxyOpts=false) => {
     if (auth.basic) {
       if (proxyOpts) proxyOpts.auth = `${auth.basic.user}:${auth.basic.pass}`; // ({user, pass}) => `${user}:${pass}`;
@@ -79,7 +76,7 @@ class Proxy {
       if (token != null) {
         // NOTE: remove basic authentication
         delete ctx.request.headers['authorization'];
-        const headers = this.tokenHeaders(token, ctx.headers);
+        const headers = Lib.Request.setBearerToken(token, ctx.headers);
         if (proxyOpts) proxyOpts.headers = headers;
         ctx.request.headers = headers;
       }
@@ -123,7 +120,7 @@ class Proxy {
     return new Promise((resolve, reject) => {
       // NOTE: resolve promise correctly after proxy.web() call 
       // solution from: https://github.com/nodejitsu/node-http-proxy/issues/951#issuecomment-179904134
-      ctx.res.on('close', () => reject(new HTTPError(`HTTP response closed while proxying ${ctx.prevUrl}`)));
+      ctx.res.on('close', () => reject(new Lib.HTTPError(`HTTP response closed while proxying ${ctx.prevUrl}`)));
       ctx.res.on('finish', resolve);
 
       const { headers } = ctx.request;
@@ -163,6 +160,7 @@ class Proxy {
     }
 
     const { body, files, headers } = ctx.request;
+
     ctx.payload = body;
 
     if (headers) {
@@ -273,4 +271,3 @@ class Proxy {
 }
 
 export default Proxy;
-export const RequestService = new Proxy();
