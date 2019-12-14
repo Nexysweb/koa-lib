@@ -1,4 +1,4 @@
-import Cache from '../cache';
+import * as Cache from '../cache';
 
 
 class LocalStore extends Cache.Local {

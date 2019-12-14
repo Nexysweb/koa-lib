@@ -1,8 +1,5 @@
-import Local from './Local';
-import Redis from './Redis';
+import Local from './local';
+import Redis from './redis';
 
 
-export default {
-  Local,
-  Redis
-};
+export { Local, Redis };
