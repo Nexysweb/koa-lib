@@ -1,4 +1,4 @@
-import Cache from '../cache';
+import * as Cache from '../cache';
 
 
 class RedisStore extends Cache.Redis {
