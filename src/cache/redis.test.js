@@ -1,4 +1,5 @@
 import RedisCache from './redis';
+import Redis from 'ioredis-mock';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -9,7 +10,8 @@ describe('redis cache', () => {
   const cache = new RedisCache({
     ip: '127.0.0.1',
     port: 6379,
-    ttl: 1 
+    ttl: 1 ,
+    mock: new Redis()
   });
 
   const data = { test: 'asdf' };

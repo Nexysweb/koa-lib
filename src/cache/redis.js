@@ -13,9 +13,9 @@ class RedisCache extends ServiceCache {
       family: 4, // 4 (IPv4) or 6 (IPv6)
       db: 0
     };
-    
+
     this.ttl = redis.ttl;
-    this.client = new Redis(options);
+    this.client = redis.mock || new Redis(options);
   }
 
   serialize(data) {
