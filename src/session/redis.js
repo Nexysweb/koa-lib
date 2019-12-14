@@ -7,12 +7,12 @@ class RedisStore extends Cache.Redis {
   }
 
   async set(session, {sid=this.getId(32), maxAge}) {
-    await this.store.set(sid, this.serialize(session), maxAge/1000);
-
-    if (this.persistent) {
-      this.save();
+    try {
+      // NOTE: use EX to automatically drop expired sessions
+      await this.client.set(sid, this.serialize(session), 'EX', maxAge/1000);
+    } catch (err) {
+      console.log(err.toString());
     }
-
     return sid;
   }
 }
