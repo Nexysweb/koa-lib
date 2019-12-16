@@ -1,6 +1,6 @@
 {
   "name": "@nexys/koa-lib",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "scripts": {
     "test": "rimraf dist/ && jest ",
     "build": "rimraf dist/ && babel src/ --out-dir dist/;rm dist/*.test.js"
