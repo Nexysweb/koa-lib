@@ -1,0 +1,36 @@
+# Tells Travis we're running on a Node environment
+language: 'node_js'
+node_js: '12'
+
+# https://docs.travis-ci.com/user/caching/#yarn-cache
+cache: yarn
+
+
+# Script that is run before the script phase
+#before_script:
+#- yarn buildStorybook
+
+build:
+- yarn test
+- yarn build
+
+jobs:
+  include:
+    - stage: npm release
+      node_js: "7"
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        api_key: $NPM_TOKEN
+        on: deploy-npm-release
+
+# # Deployment information
+# deploy:
+#   provider: pages # Tell Travis we want to deploy to Github Pages
+#   skip-cleanup: true 
+#   github-token: $GITHUB_TOKEN # Will take the environment variable you created on step 5
+#   local_dir: storybook-static # The folder that needs to be deployed
+#   repo: TSS-BP-Channel-Europe/bpms-front-static # Add your username/project_name here
+#   target_branch: gh-pages # Tell Travis to deploy on the gh-pages branch
+#   on:
+#     branch: master # Tell Travis to trigger a deploy only when we push to master
