@@ -2,7 +2,7 @@ import * as Mount from './mount';
 import Init from './init';
 import * as JWT from './jwt';
 import * as Validate from './validate';
-import { HTTPError as Error } from '@nexys/http';
+
 
 export { Mount, Init, JWT, Validate };
 

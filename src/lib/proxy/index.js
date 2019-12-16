@@ -120,7 +120,7 @@ class Proxy {
     return new Promise((resolve, reject) => {
       // NOTE: resolve promise correctly after proxy.web() call 
       // solution from: https://github.com/nodejitsu/node-http-proxy/issues/951#issuecomment-179904134
-      ctx.res.on('close', () => reject(new Lib.HTTPError(`HTTP response closed while proxying ${ctx.prevUrl}`)));
+      ctx.res.on('close', () => reject(new Lib.HTTP.Error(`HTTP response closed while proxying ${ctx.prevUrl}`)));
       ctx.res.on('finish', resolve);
 
       const { headers } = ctx.request;
