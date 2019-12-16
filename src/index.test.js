@@ -17,5 +17,5 @@ test('cache', () => {
 });
 
 test('session', () => {
-  expect(typeof Index.SessionStore).toEqual('object');
+  expect(typeof Index.Session).toEqual('object');
 });
