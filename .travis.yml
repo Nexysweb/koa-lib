@@ -14,6 +14,16 @@ build:
 - yarn test
 - yarn build
 
+jobs:
+  include:
+    - stage: npm release
+      node_js: "7"
+      script: echo "Deploying to npm ..."
+      deploy:
+        provider: npm
+        api_key: $NPM_TOKEN
+        on: deploy-npm-release
+
 # # Deployment information
 # deploy:
 #   provider: pages # Tell Travis we want to deploy to Github Pages
