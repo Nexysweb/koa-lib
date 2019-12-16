@@ -1,6 +1,6 @@
 {
   "name": "@nexys/koa-lib",
-  "version": "1.2.3",
+  "version": "1.3.2",
   "scripts": {
     "test": "rimraf dist/ && jest ",
     "build": "rimraf dist/ && babel src/ --out-dir dist/;rm dist/*.test.js"
@@ -12,6 +12,8 @@
     "@nexys/lib": "^1.6.1",
     "@nexys/utils": "^3.2.21",
     "http-proxy": "^1.18.0",
+    "ioredis": "^4.14.1",
+    "ioredis-mock": "^4.18.4",
     "joi": "^14.3.1",
     "koa": "^2.11.0",
     "koa-basic-auth": "^4.0.0",
@@ -23,6 +25,7 @@
     "koa-respond": "^2.1.0",
     "koa-router": "^7.4.0",
     "nock": "^11.7.0",
+    "node-cache": "^5.1.0",
     "path-match": "^1.2.4",
     "server-destroy": "^1.0.1",
     "supertest": "^4.0.2"

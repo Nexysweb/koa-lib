@@ -49,7 +49,6 @@ describe('local cache', () => {
     expect(result).toEqual(Object.assign(data, data2));
   });
 
-
   test('del', () => {
     cache.set('test', data, 5);
 
