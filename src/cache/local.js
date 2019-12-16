@@ -14,9 +14,10 @@ fs.exists = path => fs.stat(path).catch(err => {
 
 class LocalCache extends Cache {
   constructor(...args) {
+    // TODO: handle args.length
     const local = args.shift();
 
-    super();
+    super(...args);
 
     const { persistent, file='cache', ttl=0, checkperiod=600 } = local;
 
@@ -39,10 +40,12 @@ class LocalCache extends Cache {
     const exists = await fs.exists(filePath);
     if (exists) {
       const json = await fs.readFile(filePath, 'utf8');
-      const data = JSON.parse(json);
-      for (const [key, val] of Object.entries(data)) {
-        if (data.hasOwnProperty(key)) {
-          this.cache.set(key, val);
+      if (json) {
+        const data = JSON.parse(json);
+        for (const [key, val] of Object.entries(data)) {
+          if (data.hasOwnProperty(key)) {
+            this.cache.set(key, val);
+          }
         }
       }
     }

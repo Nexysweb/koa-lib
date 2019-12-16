@@ -914,10 +914,10 @@
     dotenv "^8.1.0"
     request-promise-native "^1.0.8"
 
-"@nexys/utils@^3.2.21":
-  version "3.2.21"
-  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.2.21.tgz#c81267470a24a8e3c9e816d07e6613a94929d353"
-  integrity sha512-v1SqOFdFjs7Vxd0K2LcoyMI/NyL+MwRs/WODYlmHWxb2DQhafUfe+THWpI8oWUkru2LMzOBqwB9r3utlYH1cMA==
+"@nexys/utils@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.5.4.tgz#b83f2318c945b74e8ae33ad28c4da122037bec4f"
+  integrity sha512-jAW5tMNhOIK8loAdrYnmORajbZ3yX47vLdKR6c5iAD0m0NUPgaGZUFkyrSEkGi/myruIr/VQ8sMTcQ2TzU3/eg==
   dependencies:
     "@babel/runtime" "^7.5.5"
 

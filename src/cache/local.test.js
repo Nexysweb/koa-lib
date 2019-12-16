@@ -7,9 +7,7 @@ function sleep(ms) {
 }
 
 describe('local cache', () => {
-  const cache = new LocalCache({
-    ttl: 2
-  });
+  const cache = new LocalCache({ ttl: 2 });
 
   const data = { test: 'asdf' };
 
@@ -90,6 +88,19 @@ describe('local cache - persistent', () => {
     await sleep(2500);
 
     await cache.load();
+    let result = cache.get('test');
+    expect(result).toEqual(data);
+  });
+});
+
+describe('local cache - nested', () => {
+  const cache = new LocalCache({ ttl: 2 }, 'passport.user');
+
+  const data = { passport: { user: { test: 'asdf' }}};
+
+  test('set', async () => {
+    cache.set('test', data);
+
     let result = cache.get('test');
     expect(result).toEqual(data);
   });

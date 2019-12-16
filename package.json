@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@nexys/lib": "^1.6.1",
-    "@nexys/utils": "^3.2.21",
+    "@nexys/utils": "3.5.4",
     "http-proxy": "^1.18.0",
     "ioredis": "^4.14.1",
     "ioredis-mock": "^4.18.4",
