@@ -48,6 +48,8 @@ jobs:
           filters:
             tags:
               only: /^v.*/
+            branches:
+              ignore: /.*/
           name: Publish to NPM
           command: |
             yarn build
