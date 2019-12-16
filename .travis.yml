@@ -17,7 +17,7 @@ build:
 deploy:
   provider: npm
   email: "johan@nexys.ch"
-  api_key: $NPM_TOKEN
+  api_key: "$NPM_TOKEN"
 
 # # Deployment information
 # deploy:
