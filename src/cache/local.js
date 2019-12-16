@@ -34,8 +34,8 @@ class LocalCache extends Cache {
     }
   }
 
-  async load(directoryPath = __dirname) {
-    const filePath = path.join(directoryPath, `${this.file}.json`);
+  async load(dir=process.cwd()) {
+    const filePath = path.join(dir, `${this.file}.json`);
     const exists = await fs.exists(filePath);
     if (exists) {
       const json = await fs.readFile(filePath, 'utf8');
@@ -48,12 +48,12 @@ class LocalCache extends Cache {
     }
   };
 
-  async save(directoryPath = __dirname) {
+  async save(dir=process.cwd()) {
     const keys = this.cache.keys();
     const data = this.cache.mget(keys);
 
     const json = JSON.stringify(data);
-    const fpath = path.join(directoryPath, `${this.file}.json`);
+    const fpath = path.join(dir, `${this.file}.json`);
     await fs.writeFile(fpath, json);
 
     console.log(`Cache saved to file at ${fpath}`);
