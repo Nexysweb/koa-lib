@@ -7,6 +7,6 @@ import * as SessionStore from './session';
 export {
   Lib,
   Middleware,
-  SessionStore,
+  Session,
   Cache
 };

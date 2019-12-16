@@ -18,12 +18,10 @@ class Cache {
 
   deserialize(data) {
     if (this.path) {
-      // TODO: nest path to get {passport: {user: data}};
       return Utils.ds.nest({[this.path]: data});
     } else return data;
   }
 
-  // TODO: throw error if not implemented
   get() {
     throw new Error('Cache getter not implemented');
   }
