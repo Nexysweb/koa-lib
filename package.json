@@ -11,6 +11,7 @@
     "@babel/runtime": "^7.5.5",
     "@nexys/lib": "^1.6.1",
     "@nexys/utils": "3.5.4",
+    "dotenv": "^8.2.0",
     "http-proxy": "^1.18.0",
     "ioredis": "^4.14.1",
     "ioredis-mock": "^4.18.4",
