@@ -1,6 +1,6 @@
 import bodyParser from 'koa-body';
 
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 
 // TODO: use Lib.Validate
 export const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
