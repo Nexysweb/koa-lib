@@ -12,14 +12,11 @@ export const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
   return errors;
 }, {});
 
-export const validate = (body, schema, options={}) => {
-  return schema.validate(body, {
-    abortEarly: false, // NOTE: do not stop at first error, return all errors
-    allowUnknown: true,
-    ...options
-  });
-}
-
+export const validate = (body, schema, options={}) => schema.validate(body, {
+  abortEarly: false, // NOTE: do not stop at first error, return all errors
+  allowUnknown: true,
+  ...options
+});
 
 export const body = (schema, options={}) => async (ctx, next) => {
   if (!ctx.request.body) {
