@@ -1,7 +1,7 @@
 import Utils from '@nexys/utils';
 
 
-class EnvVar {
+export class EnvVar {
   // TODO: constructor for two different types of envVar
 
   static create(name, defaultValue) {
@@ -19,7 +19,7 @@ class EnvVar {
     };
   }
 
-  static compose(...args, fn) {
+  static compose(fn, ...args) {
     return {
       args,
       compose: fn,
