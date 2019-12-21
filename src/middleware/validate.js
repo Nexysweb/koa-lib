@@ -12,6 +12,14 @@ export const formatErrors = (errArr, prefix) => errArr.reduce((errors, err) => {
   return errors;
 }, {});
 
+export const validate = (body, schema, options={}) => {
+  return schema.validate(body, {
+    abortEarly: false, // NOTE: do not stop at first error, return all errors
+    allowUnknown: true,
+    ...options
+  });
+}
+
 
 export const body = (schema, options={}) => async (ctx, next) => {
   if (!ctx.request.body) {
@@ -20,11 +28,7 @@ export const body = (schema, options={}) => async (ctx, next) => {
   
   const { body } = ctx.request;
 
-  const result = Joi.validate(body, schema, {
-    abortEarly: false, // NOTE: do not stop at first error, return all errors
-    allowUnknown: true,
-    ...options
-  });
+  const result = validate(body, schema, options);
 
   if (result.error) {
     const validErrors = formatErrors(result.error.details);
