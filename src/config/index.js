@@ -100,6 +100,7 @@ class Config {
 
   // TODO: just allow passing multiple configs together into setup()
   default() {
+    // @fab this probably broke (the compose function had to be changed because the order of rthe args was wrong)
     const name = EnvVar.compose('PRODUCT', 'SYSTEM', (product, system) => product + '_' + system);
 
     const host = EnvVar.create('URL', 'http://localhost:3021'); // ref other variable
