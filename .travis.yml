@@ -5,7 +5,7 @@ node_js: '12'
 # https://docs.travis-ci.com/user/caching/#yarn-cache
 cache: yarn
 
-build:
+script:
 - yarn test
 - yarn build
 
