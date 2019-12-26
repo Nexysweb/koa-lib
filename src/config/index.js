@@ -26,6 +26,12 @@ class Config {
 
       console.log(result.parsed)
     }
+
+    /* TODO
+      build object automatically
+
+      FOO.BAR.MY_TEST
+    */
   }
 
   parseName(name, defaultValue) {
