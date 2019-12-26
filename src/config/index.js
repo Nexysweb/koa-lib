@@ -1,47 +1,24 @@
+import dotenv from 'dotenv';
+
+import EnvVar from './envVar';
+
 import Utils from '@nexys/utils';
 
 
-class EnvVar {
-  // TODO: constructor for two different types of envVar
-
-  static create(name, defaultValue) {
-    if (defaultValue !== undefined) {
-      return {
-        name,
-        defaultValue,
-        isEnvVar: true
-      };
-    }
-
-    return {
-      name,
-      isEnvVar: true
-    };
-  }
-
-  static compose(...args, fn) {
-    return {
-      args,
-      compose: fn,
-      isEnvVar: true
-    };
-  }
-};
-
 class Config {
-  constructor(config, local=true) {
-    this.initEnv(local);
+  constructor(config={}, local=true, opts={}) {
+    this.initEnv(local, opts);
     this.setup(config);
   };
 
-  initEnv(local) {
-    if (local) {
-      for ([key, value] of Object.entries(process.env)) {
+  initEnv(local, opts={}) {
+    if (!local) {
+      for (let [key, value] of Object.entries(process.env)) {
         process.env[key] = Utils.string.parseEnvVar(value);
       }
     } else {
       // config will read your .env file, parse the contents and assign it to process.env
-      const result = dotenv.config(); // config({path})
+      const result = dotenv.config(opts);
 
       if (result.error) {
         throw result.error;
@@ -51,15 +28,7 @@ class Config {
     }
   }
 
-  parseEnvVar(envVar) {
-    const { name } = envVar;
-    let defaultValue = null;
-    if (envVar.defaultValue) {
-      defaultValue = envVar.default;
-    }
-
-    // TODO: compose
-
+  parseName(name, defaultValue) {
     let value = process.env[name];
     if (!value) { // undefined || null
       if (defaultValue) return defaultValue; // assumption: default value is already formatted
@@ -79,6 +48,23 @@ class Config {
     }
   }
 
+  parseEnvVar(envVar) {
+    if (envVar.args) {
+      // TODO: dependency graph
+      const values = envVar.args.map(name => this.parseName(name));
+      envVar.compose(...values);
+    }
+
+    const { name } = envVar;
+    let defaultValue = null;
+
+    if (envVar.defaultValue) {
+      defaultValue = envVar.defaultValue;
+    }
+
+    return this.parseName(name, defaultValue);
+  }
+
   parse(config) {
     const result = {};
     for (const key in config) {
@@ -88,7 +74,7 @@ class Config {
         if (value.isEnvVar) {
           value = this.parseEnvVar(value);
         } else if (typeof value === 'object') {
-          value = this.parse(config);
+          value = this.parse(value);
         }
 
         result[key] = value;
@@ -98,9 +84,8 @@ class Config {
     return result;
   }
 
-  // TODO: just allow passing multiple configs together into setup()
   default() {
-    const name = EnvVar.compose('PRODUCT', 'SYSTEM', (product, system) => product + '_' + system);
+    const name = EnvVar.compose((product, system) => product + '_' + system, 'PRODUCT', 'SYSTEM');
 
     const host = EnvVar.create('URL', 'http://localhost:3021'); // ref other variable
 
@@ -119,13 +104,12 @@ class Config {
     };
 
     const redis = {
-      host: EnvVar.create('REDIS_HOST'),
-      port: EnvVar.create('REDIS_PORT')
-      // password: 'REDIS_PW'
+      host: EnvVar.create('REDIS_HOST', '127.0.0.1'),
+      port: EnvVar.create('REDIS_PORT', 6379)
     };
 
     const session = {
-      signatureKeys: EnvVar.create('COOKIE_SIGNATURE_KEYS'),
+      signatureKeys: EnvVar.create('COOKIE_SIGNATURE_KEYS'), // Utils.random.generateString
       duration: EnvVar.create('SESSION_DURATION_MINUTES', 60 * 24)
     };
 
@@ -143,6 +127,7 @@ class Config {
     };
   }
 
+  // TODO: allow passing multiple configs together into setup()
   setup = (config={}) => {
     const defaultConfig = this.default();
 
