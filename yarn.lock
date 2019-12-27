@@ -917,10 +917,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@nexys/http@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@nexys/http/-/http-0.0.4.tgz#74a2f3c4339858449e820c53f35e9ee6ebafd250"
-  integrity sha512-b55f/PabvyU5CKeYku3EvJ+qI3+yfYQFC/1ChP227ZJ1tBaIuWJTid5kdYmop7j3ptXMihZCd5rtYSBoguL+QQ==
+"@nexys/http@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@nexys/http/-/http-0.0.9.tgz#97e67ec8896fd8543d4a5dfddcfeca49c9746a2b"
+  integrity sha512-ebvN854t6j8TjNEhpcJGPfEGyG1LQsrxi0m0BBGGlpUZa2JLeYOfTya4ocFnLTncs/Ei8SKPqE1dGM5JssL9dg==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@hapi/joi" "^14.3.1"
@@ -928,17 +928,18 @@
     dotenv "^8.1.0"
     request-promise-native "^1.0.8"
 
-"@nexys/lib@^1.6.15":
-  version "1.6.15"
-  resolved "https://registry.yarnpkg.com/@nexys/lib/-/lib-1.6.15.tgz#7976ac2165b49bf9715a6f12ded25b7c9aa8085a"
-  integrity sha512-t5fPEeO9NSfwJ1EXIQPAj7hHhEgu/OsEIvrCTCyGz6PewuUGSfW8sRA+rP//Thh8w0o03jSnJVslx4tXg+RW+Q==
+"@nexys/lib@^1.6.21":
+  version "1.6.21"
+  resolved "https://registry.yarnpkg.com/@nexys/lib/-/lib-1.6.21.tgz#a28969cefdc534d26112bf0f720b27d5d504dc6d"
+  integrity sha512-hOQH/fRaFV+Uhs49zqz9ORleP7blX5BMsFLQTZfoyVqiGFNDJogBIP7qjg/LGpCnu/q5hz+eiO786Sggw+8xcw==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@hapi/joi" "^16.1.8"
-    "@nexys/http" "^0.0.4"
+    "@nexys/http" "^0.0.9"
     "@nexys/utils" "^3.2.23"
     dotenv "^8.1.0"
     request-promise-native "^1.0.8"
+    validator "^12.1.0"
 
 "@nexys/utils@3.5.4":
   version "3.5.4"
@@ -5521,6 +5522,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@^12.1.0:
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-12.1.0.tgz#a3a7315d5238cbc15e46ad8d5e479aafa7119925"
+  integrity sha512-gIC2RBuFRi574Rb9vewGCJ7TCLxHXNx6EKthEgs+Iz0pYa9a9Te1VLG/bGLsAyGWrqR5FfR7tbFUI7FEF2LiGA==
 
 vary@^1.1.2:
   version "1.1.2"
