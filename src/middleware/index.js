@@ -1,3 +1,5 @@
+import compose from 'koa-compose';
+
 import * as Mount from './mount';
 import Init from './init';
 import * as JWT from './jwt';
