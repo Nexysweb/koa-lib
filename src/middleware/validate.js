@@ -1,6 +1,7 @@
 import bodyParser from 'koa-body';
-import Joi from '@hapi/joi';
+
 import { Validation } from '@nexys/lib';
+
 
 export const body = (schema, options={}) => async (ctx, next) => {
   if (!ctx.request.body) {
@@ -9,15 +10,9 @@ export const body = (schema, options={}) => async (ctx, next) => {
   
   const { body } = ctx.request;
 
-  const result = Validation.validate(body, schema, options);
+  await Validation.validate(body, schema, options);
 
-  if (result.error) {
-    const validErrors = Validation.formatErrors(result.error.details);
-    ctx.badRequest(validErrors);
-    return;
-  } else {
-    await next();
-  }
+  await next();
 };
 
 // TODO: ctx.params validation - schema without nesting
