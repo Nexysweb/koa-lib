@@ -7,7 +7,7 @@ import EnvVar from './envVar';
 
 describe('local', () => {
   const opts = {
-    path: path.resolve(process.cwd(), 'src/config', '.env')
+    path: path.resolve(process.cwd(), 'src/config', '.test.env')
   };
 
   test('default', () => {
