@@ -1,16 +1,16 @@
 import compose from 'koa-compose';
+import basicAuth from 'koa-basic-auth';
 
 import * as Errors from './error';
 import * as Response from './response';
 import * as JWT from './jwt';
 import * as Validate from './validate';
 import * as Mount from './mount';
-import Init from './init';
 
 
-export { Errors, Response, JWT, Validate, Mount, Init };
+export { Errors, Response, JWT, Validate, Mount };
 
-export const isBasicAuthenticated = (name, pass) => basicAuth({name, pass});
+export const isBasicAuthenticated = (username, password) => basicAuth({name: username, pass: password});
 
 /*
   NOTE: Returns separate middleware for responding to OPTIONS requests with an Allow header containing the allowed methods, as well as responding with
