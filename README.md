@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/Nexysweb/koa-lib.svg?style=svg)](https://circleci.com/gh/Nexysweb/koa-lib)
 [![TavisCI](https://travis-ci.com/Nexysweb/koa-lib.svg?branch=master)](https://travis-ci.com/Nexysweb/koa-lib)
 
-Digis web framework (built on top of Koa)
+Nexys web framework (built on top of Koa)
 
 ```
 const a = require('@nexys/koa-lib')
