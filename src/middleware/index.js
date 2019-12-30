@@ -6,9 +6,11 @@ import * as Response from './response';
 import * as JWT from './jwt';
 import * as Validate from './validate';
 import * as Mount from './mount';
+// DEPRECATED
+import Init from './init';
 
 
-export { Errors, Response, JWT, Validate, Mount };
+export { Errors, Response, JWT, Validate, Mount, Init };
 
 export const isBasicAuthenticated = (username, password) => basicAuth({name: username, pass: password});
 
