@@ -19,7 +19,3 @@ test('routes', () => {
 test('Mount', () => {
   expect(typeof Index.Mount).toEqual('object');
 });
-
-test('Init', () => {
-  expect(typeof Index.Init).toEqual('function');
-});
