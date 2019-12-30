@@ -16,8 +16,8 @@ test('Validate', () => {
   expect(typeof Index.Validate).toEqual('object');
 });
 
-test('responseHandler', () => {
-  expect(typeof Index.responseHandler).toEqual('function');
+test('Response.handler', () => {
+  expect(typeof Index.Response.handler).toEqual('function');
 });
 
 test('routes', () => {
