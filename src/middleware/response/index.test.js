@@ -22,7 +22,7 @@ describe('error handling', () => {
 
     const response = await request(server).get('/');
     expect(response.status).toEqual(500);
-    expect(response.body.message).toEqual('500, Something went wrong');
+    expect(response.body.message).toEqual('Internal Server Error');
 
     // TODO: how to test what error handler logged
   });
