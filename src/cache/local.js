@@ -43,13 +43,14 @@ class LocalCache extends Cache {
       if (json) {
         const data = JSON.parse(json);
         for (const [key, val] of Object.entries(data)) {
+          /* eslint-disable no-prototype-builtins */
           if (data.hasOwnProperty(key)) {
             this.cache.set(key, val);
           }
         }
       }
     }
-  };
+  }
 
   async save(dir=process.cwd()) {
     const keys = this.cache.keys();

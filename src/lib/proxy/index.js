@@ -46,7 +46,7 @@ class Proxy {
     }
 
     return this.setupMiddleware(options);
-  };
+  }
 
   targetUrl = target => typeof target === 'object' ? `${target.host}:${target.port}` : target;
 
@@ -226,6 +226,7 @@ class Proxy {
 
     if (response.error) {
       if (hooks.error) {
+        // err undefined ... replace with `response.error`?
         hooks.error(ctx, err);
       }
     }

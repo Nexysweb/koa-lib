@@ -23,6 +23,6 @@ class EnvVar {
       isEnvVar: true
     };
   }
-};
+}
 
 export default EnvVar;

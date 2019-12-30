@@ -93,7 +93,7 @@ describe('local cache - persistent', () => {
   });
 });
 
-describe('local cache - nested', () => {
+describe('local cache - nested 2', () => {
   const cache = new LocalCache({ ttl: 2 }, 'passport.user');
 
   const data = { passport: { user: { test: 'asdf' }}};
