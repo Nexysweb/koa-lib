@@ -1,8 +1,8 @@
 import Koa from 'koa';
 import Respond from 'koa-respond';
 
-import * as Response from './index';
-import * as Errors from '../error';
+import * as Response from '../middleware/response/index';
+import * as Errors from '../middleware/error';
 
 
 export default (middleware=[]) => {

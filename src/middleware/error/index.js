@@ -1,5 +1,7 @@
 export const logger = (err, _) => {
-  console.error(new Date().toISOString() + ' - Server error: \n' + err.toString());
+  if (err) {
+    console.error(new Date().toISOString() + ' - Server error: \n' + err.toString());
+  }
 }
 
 /*
@@ -20,7 +22,7 @@ export const logger = (err, _) => {
   https://koajs.com/#error-handling
 */
 export const handler = (ctx, err) => {
-  if (err.expose || err.status < 500) {
+  if (err.expose || (err.status && err.status < 500)) {
     // NOTE: expose client errors
 
     switch (err.status) {
