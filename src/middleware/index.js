@@ -14,6 +14,14 @@ export { Errors, Response, JWT, Validate, Mount, Init };
 
 export const isBasicAuthenticated = (username, password) => basicAuth({name: username, pass: password});
 
+export const isAuthenticated = async (ctx, next) => {
+  if (ctx.isAuthenticated()) {
+    await next();
+  } else {
+    ctx.throw(401, 'Unauthorized! Please log in');
+  }
+}
+
 /*
   NOTE: Returns separate middleware for responding to OPTIONS requests with an Allow header containing the allowed methods, as well as responding with
   - 405 Method Not Allowed and
