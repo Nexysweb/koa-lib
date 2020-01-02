@@ -19,8 +19,17 @@ describe('response handling', () => {
     expect(response.text).toEqual('test');
   });
 
+  test('simple response', async () => {
+    const middleware = [ctx => { ctx.state.response = 'test'; }]; // NOTE: sets ctx.text
+    server = createServer(middleware);
+
+    const response = await request(server).get('/');
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({message: 'test'});
+  });
+
   test('state 200', async () => {
-    const middleware = [ctx => { ctx.state = new HTTP.Success({ message: 'result' }); }];
+    const middleware = [ctx => { ctx.state.response = new HTTP.Success({ message: 'result' }); }];
     server = createServer(middleware);
 
     const response = await request(server).get('/');
@@ -29,7 +38,7 @@ describe('response handling', () => {
   });
 
   test('state 201', async () => {
-    const middleware = [ctx => { ctx.state = new HTTP.Success({ message: 'result' }, {}, 201); }];
+    const middleware = [ctx => { ctx.state.response = new HTTP.Success({ message: 'result' }, {}, 201); }];
     server = createServer(middleware);
 
     const response = await request(server).get('/');

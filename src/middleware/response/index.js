@@ -9,25 +9,42 @@ export const handler = (messages={}) => async (ctx, next) => {
     await next();
 
     // NOTE: in downstream middleware: ctx.state.response = await someFunction()
-    if (ctx.state instanceof HTTP.Success) {
-      const { status, body } = ctx.state;
-      ctx.send(status, body);
-      return;
-    }
+    if (ctx.state.response) {
+      const { response } = ctx.state;
 
-    switch (ctx.status) {
-      case 401: {
-        ctx.unauthorized(messages.unauthorized || 'Unauthorized');
-        break;
-      }
-      case 404: {
-        ctx.notFound(messages.notFound || 'Not found. The requested route does not exist');
-        break;
-      }
-      default: 
-        if (Utils.ds.isEmpty(ctx.body)) {
-          ctx.send(204, 'No Content');
+      if (response instanceof HTTP.Success) {
+        const { status, body, headers } = ctx.state.response;
+        ctx.send(status, body);
+
+        if (headers) {
+          ctx.set(headers);
         }
+      } else if (response instanceof HTTP.Response) {
+        // HTTP.Response => status = 300 => ctx.redirect
+        const { status, body, headers } = ctx.state.response;
+        ctx.send(status, body);
+
+        if (headers) {
+          ctx.set(headers);
+        }
+      } else {
+        ctx.ok(response);
+      }
+    } else {
+      switch (ctx.status) {
+        case 401: {
+          ctx.unauthorized(messages.unauthorized || 'Unauthorized');
+          break;
+        }
+        case 404: {
+          ctx.notFound(messages.notFound || 'Not found. The requested route does not exist');
+          break;
+        }
+        default: 
+          if (Utils.ds.isEmpty(ctx.body)) {
+            ctx.send(204, 'No Content');
+          }
+      }
     }
   } catch (err) {
     Errors.handler(ctx, err);
