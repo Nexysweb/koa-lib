@@ -1,9 +1,5 @@
 import * as Index from './index';
 
-test('JWT', () => {
-  expect(typeof Index.JWT).toEqual('object');
-});
-
 test('Validate', () => {
   expect(typeof Index.Validate).toEqual('object');
 });
@@ -23,3 +19,6 @@ test('Mount', () => {
 test('Init', () => {
   expect(typeof Index.Init).toEqual('object');
 });
+
+
+// TODO: test hasPermissions / isAuthorized (session setup)
