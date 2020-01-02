@@ -18,7 +18,7 @@ describe('auth handling', () => {
 
     const response = await request(server).get('/');
     expect(response.status).toEqual(401);
-    expect(response.body).toEqual({ message: 'Unauthorized! Please log in' });
+    expect(response.body).toEqual({ message: 'Unauthorized. Please log in!' });
   });
 
   test('isAuthenticated', async () => {

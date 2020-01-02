@@ -1,9 +1,5 @@
 import * as Index from './index';
 
-test('JWT', () => {
-  expect(typeof Index.JWT).toEqual('object');
-});
-
 test('Validate', () => {
   expect(typeof Index.Validate).toEqual('object');
 });
