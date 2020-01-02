@@ -23,3 +23,6 @@ test('Mount', () => {
 test('Init', () => {
   expect(typeof Index.Init).toEqual('object');
 });
+
+
+// TODO: test hasPermissions / isAuthorized (session setup)
