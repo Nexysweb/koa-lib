@@ -34,7 +34,7 @@
     "dist/*"
   ],
   "devDependencies": {
-    "@nexys/babelsetup": "^0.0.4",
+    "@nexys/babelsetup": "^0.0.6",
     "rimraf": "^3.0.0"
   }
 }

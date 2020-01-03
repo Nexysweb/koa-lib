@@ -917,10 +917,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@nexys/babelsetup@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@nexys/babelsetup/-/babelsetup-0.0.4.tgz#fc66743dd3037f136a9ee8f1de08c746bee8cd3b"
-  integrity sha512-zLs80NKMv6Fq8h7TYkd0Sg5f93Viho7Nx3rWw/WO/RcXG3OYAcRP091EgZw2moJnWoftrb0lHsUFJF0Ma+xJJA==
+"@nexys/babelsetup@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@nexys/babelsetup/-/babelsetup-0.0.6.tgz#3f347f27370528edededbe5072ee10b9a1bbef28"
+  integrity sha512-qRQR+lqU+CjdtCzPgZYbHqIJzZf6+OJSE/HfjFO2VsXI1ZEh4DdCB0MaOfp6SntndpFt2f1AN7NSNrw6AzMxYg==
   dependencies:
     "@babel/cli" "^7.5.5"
     "@babel/core" "^7.5.5"
@@ -932,6 +932,7 @@
     babel-plugin-module-resolver "^3.2.0"
     babel-plugin-transform-runtime "^6.23.0"
     babel-preset-minify "^0.5.1"
+    jest "^24.9.0"
 
 "@nexys/http@^0.0.11":
   version "0.0.11"
