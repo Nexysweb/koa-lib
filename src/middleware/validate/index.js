@@ -28,7 +28,7 @@ export const params = (schema, options={}) => async (ctx, next) => {
     }
   }
 
-  await Validation.validate(params, schema, {format: { prefix: 'params' }, ...options});
+  await Validation.validate(params, schema, { presence: 'required', format: { prefix: 'params' }, ...options});
 
   await next();
 }
