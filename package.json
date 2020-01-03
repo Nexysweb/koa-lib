@@ -37,7 +37,6 @@
   ],
   "devDependencies": {
     "@nexys/babelsetup": "^0.0.4",
-    "jest": "^24.9.0",
     "rimraf": "^3.0.0"
   }
 }
