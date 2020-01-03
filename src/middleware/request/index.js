@@ -1,7 +1,7 @@
 import { HTTP } from '@nexys/lib';
 
 
-export const info = ctx => {
+export const info = async (ctx, next) => {
   const { userAgent, ip, host } = ctx;
 
   if (!userAgent) {
@@ -20,4 +20,6 @@ export const info = ctx => {
     source,
     os
   };
+
+  await next();
 }
