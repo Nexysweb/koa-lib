@@ -65,9 +65,3 @@ describe('error handling', () => {
     expect(response.body.message).toEqual('ctx is not defined');
   });
 });
-
-/*
-  describe('auth error handling', () => {
-    // TODO: test 401 (setup passport?)
-  });
-*/
