@@ -1,7 +1,6 @@
 /**
  * Session store & middleware for Koa with (keys stored in cookies)
 **/
-
 import Local from './local';
 import Redis from './redis';
 
@@ -70,7 +69,34 @@ const middleware = (opts={}) => {
   }
 }
 
+const configure = (session, production=false, passport=false) => {
+  // TODO for other user cases: setting token as cookies
+  // https://medium.com/@yuliaoletskaya/can-jwt-be-used-for-sessions-4164d124fe2
+  const { key, duration=(24*60), signed, httpOnly=true, local={}, redis={} } = session;
+  // key: product.name
+
+  const nesting = passport ? 'passport.user' : undefined;
+  let store = new Local({persistent: true, ...local}, nesting);
+  if (production) {
+    store = new Redis({host: '127.0.0.1', port: 6379, ...redis}, key, nesting);
+  }
+
+  // NOTE: koa cookie options - https://github.com/koajs/koa/blob/master/docs/api/context.md#ctxcookiessetname-value-options
+  // NOTE: refresh(): if you set maxAge in options, you can call ctx.session.refresh() to refresh session to your store
+  return {
+    key,
+    store,
+    maxAge: 1000 * 60 * duration, // in ms
+    httpOnly, // NOTE: prevent client-side access to cookie (document.cookie)
+    signed
+    // secure: inProd // NOTE: cookie only sent over https => doesn't detect https from nginx
+  };
+}
 
 const store = { Local, Redis };
 
-export { middleware, store };
+export {
+  store,
+  configure,
+  middleware
+};
