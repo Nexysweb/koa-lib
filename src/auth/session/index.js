@@ -1,5 +1,7 @@
 import Utils from '@nexys/utils';
 
+import { HTTP } from '@nexys/lib';
+
 
 export const get = ctx => {
   if (ctx.session) {
