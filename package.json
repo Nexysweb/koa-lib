@@ -2,7 +2,7 @@
   "name": "@nexys/koa-lib",
   "version": "1.4.0",
   "scripts": {
-    "test": "rimraf dist/ && jest ",
+    "test": "rimraf dist/ && jest --detectOpenHandles",
     "build": "rimraf dist/ && babel src/ --out-dir dist/;rm dist/*.test.js"
   },
   "main": "dist/index.js",

@@ -82,6 +82,7 @@ describe('init', () => {
     expect(response.body.id).toBe(1);
     const cookie = response.headers['set-cookie'][0].split(' ')[0];
     expect(cookie.length).toEqual(42);
+    server.close();
   });
 
   test('with passport', async () => {
