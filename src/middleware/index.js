@@ -40,6 +40,7 @@ export const hasPermissions = permissions => async (ctx, next) => {
 export const isAuthorized = permissions => compose([isAuthenticated, hasPermissions(permissions)]);
 
 // NOTE: assuming roles: user (default), admin; more roles: hasRole('admin')
+// https://stackoverflow.com/questions/45025613/role-based-jwt-authorization
 export const hasAdminRights = async (ctx, next) => {
   const { isAdmin } = ctx.state.user;
 

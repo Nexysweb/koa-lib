@@ -1,10 +1,9 @@
-import Koa from 'koa';
 import mount from 'koa-mount';
 
-import http from 'http';
 import nock from 'nock';
 import request from 'supertest';
-import destroyable from 'server-destroy';
+
+import createServer from '../mocks/server';
 
 import Proxy from './index';
 
@@ -37,12 +36,13 @@ const hookProxy = new Proxy('/another/test', {
       }
     },
     after: {
-      manipulation: (ctx, body, response) => {
-        ctx.status = 400;
-        ctx.body = { message: 'test' }; // 'test'
+      manipulation: (ctx, body, _) => {
+        if (body && body.hello === 'world') {
+          ctx.status = 400;
+          ctx.body = { message: 'test' };
+        }
 
         // Problem: when returning 'text' text/plain server sets body to {}
-
         // response.headers['content-type'] = 'text/plain';
         // ctx.set('content-type', 'text/plain');
       }
@@ -51,19 +51,19 @@ const hookProxy = new Proxy('/another/test', {
 });
 
 
-const app = new Koa();
-app.use(mount('/test', standardProxy));
-app.use(mount('/further', tokenProxy));
-app.use(mount('/another', hookProxy));
+const middleware = [];
+middleware.push(mount('/test', standardProxy));
+middleware.push(mount('/further', tokenProxy));
+middleware.push(mount('/another', hookProxy));
 
-const server = http.createServer(app.callback()).listen(9999);
-destroyable(server);
+// NOTE: test proxy together with response handler
+const server = createServer(middleware, true);
+
 
 afterAll(() => {
-  // close the server after each test
-  server.destroy();
+  // close the server after last test
+  server.close();
 });
-
 
 describe('standard proxy', () => {
   test('get', async () => {
@@ -72,11 +72,20 @@ describe('standard proxy', () => {
       .reply(200, { data: [{ test: 'me' }] });
 
     const response = await request(server).get('/test/me');
-
     expect(response.status).toEqual(200);
     expect(response.type).toEqual('application/json');
     expect(response.body).toEqual(expect.objectContaining({data: expect.any(Array)}));
   });
+
+  test('empty list', async () => {
+    nock('https://standard.proxy')
+    .get('/me')
+    .reply(200, []);
+
+    const response = await request(server).get('/test/me');
+    expect(response.status).toEqual(200);
+    expect(response.type).toEqual('application/json');
+  })
 
   // tbc...
 });
@@ -100,12 +109,36 @@ describe('proxy with token authentication', () => {
 });
 
 describe("proxy with hooks", () => {
-  test('get', async () => {
+  test('empty list', async () => {
     nock('https://hook.proxy')
       .get('/test/again')
       .matchHeader('authorization', 'Bearer TOKEN')
       .query({hello: 'world'})
-      .reply(200, { okay: 'bye' });
+      .reply(200, undefined); 
+
+    const response = await request(server).get('/another/test/again');
+    expect(response.status).toEqual(204);
+    expect(response.body).toEqual({});
+  });
+
+  test('empty list', async () => {
+    nock('https://hook.proxy')
+      .get('/test/again')
+      .matchHeader('authorization', 'Bearer TOKEN')
+      .query({hello: 'world'})
+      .reply(200, []);
+
+    const response = await request(server).get('/another/test/again');
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual([]);
+  });
+
+  test('after hook', async () => {
+    nock('https://hook.proxy')
+      .get('/test/again')
+      .matchHeader('authorization', 'Bearer TOKEN')
+      .query({hello: 'world'})
+      .reply(200, { hello: 'world' });
 
     const response = await request(server).get('/another/test/again');
 

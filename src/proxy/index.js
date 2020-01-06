@@ -7,7 +7,7 @@ import pathToRegexp from 'path-match'; // 'path-to-regexp';
 import bodyParser from 'koa-body';
 import compose from 'koa-compose';
 
-import { getPassportSession } from '../auth';
+import * as Auth from '../auth';
 
 import Utils from '@nexys/utils';
 import Lib from '@nexys/lib';
@@ -63,14 +63,20 @@ class Proxy {
     }
 
     if (auth.token) {
-      const session = getPassportSession(ctx);
       let token = null;
       // NOTE: get token
       if (typeof auth.token === 'string') {
         token = auth.token;
-      } else if (session) {
-        const session = getPassportSession(ctx); 
-        token = session.token;
+      } else if (ctx.state.user) {
+        // NOTE: Passport.session() middleware retrieves req.user|ctx.state.user from session (cookie) with default session auth strategy
+        // https://github.com/jaredhanson/passport/blob/2327a36e7c005ccc7134ad157b2f258b57aa0912/lib/authenticator.js#L197
+        token = ctx.state.user.token;
+      } else {
+        // NOTE: !Passport.session() => retrieve token from ctx.session directly
+        const session = Auth.Session.get(ctx);
+        if (session) {
+          token = session.token;
+        }
       }
 
       if (token != null) {
@@ -217,32 +223,45 @@ class Proxy {
     }
 
     this.logger(ctx);
-    const response = await Lib.Request.call(ctx, resolveResponse);
-    // TODO: if resolveResponse: response vs body
 
-    ctx.status = response.status;
-    ctx.body = response.body;
-    // if (response.headers) ctx.set(response.headers);
+    try {
+      const response = await Lib.Request.call(ctx, resolveResponse);
 
-    if (response.error) {
+      if (response.headers) {
+        const contentDisposition = response.headers['content-disposition'];
+        if (contentDisposition && contentDisposition.startsWith('attachment')) {
+          ctx.set('content-disposition', contentDisposition);
+          ctx.set('content-type', contentType);
+        }
+
+        const contentType = response.headers['content-type'];
+        if (contentType && contentType == 'application/octet-stream') {
+          ctx.set('content-type', contentType);
+        }
+
+        // TODO: handle more headers
+      }
+
+      if (resolveResponse) {
+        ctx.status = response.status;
+        ctx.body = response.body;
+      }
+
+      if (hooks.after) {
+        Object.keys(hooks.after).forEach(name => {
+          if (resolveResponse) {
+            hooks.after[name](ctx, response.body, response);
+          } else {
+            hooks.after[name](ctx, response);
+          }
+        });
+      }
+    } catch (err) {
       if (hooks.error) {
         hooks.error(ctx, err);
+      } else {
+        throw err;
       }
-    }
-
-    if (hooks.after) {
-      Object.keys(hooks.after).forEach(name => hooks.after[name](ctx, response.body, response));
-    }
-
-    const contentDisposition = response.headers && response.headers['content-disposition'];
-    if (contentDisposition && contentDisposition.startsWith('attachment')) {
-      ctx.set('content-disposition', contentDisposition);
-      ctx.set('content-type', contentType);
-    }
-
-    const contentType = response.headers && response.headers['content-type'];
-    if (contentType && contentType == 'application/octet-stream') {
-      ctx.set('content-type', contentType);
     }
   }
 

@@ -27,7 +27,8 @@ class LocalCache extends Cache {
     });
 
     if (persistent) {
-      this.persistent = persistent;
+      // `!!`: casting to boolean
+      this.persistent = !!persistent;
       this.file = file;
 
       // NOTE: constructor not async - https://gist.github.com/goloroden/c976971e5f42c859f64be3ad7fc6f4ed

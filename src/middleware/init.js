@@ -1,4 +1,4 @@
-// init the app and adds important plugins
+// DEPRECATED in favor of App.init
 import Koa from 'koa';
 
 import Helmet from 'koa-helmet';

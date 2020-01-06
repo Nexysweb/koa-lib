@@ -1,21 +1,28 @@
-import * as Lib from './lib';
+import Proxy from './proxy';
+import * as Auth from './auth';
+
 import * as Middleware from './middleware';
 import * as Cache from './cache';
 import * as Session from './session';
+import * as App from './app';
 
 
 const exports = {
-  Lib,
+  Proxy,
+  Auth,
   Middleware,
   Session,
-  Cache
+  Cache,
+  App
 };
 
 export {
-  Lib,
+  Proxy,
+  Auth,
   Middleware,
   Session,
-  Cache
+  Cache,
+  App
 };
 
 export default exports; 

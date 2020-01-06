@@ -1,3 +1,4 @@
+// DEPREACTED in favor App.routeHandler, app.route, app.mount
 import mount from 'koa-mount';
 
 export const handler = (route, filepath) => {
