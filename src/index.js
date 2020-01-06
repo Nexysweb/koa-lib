@@ -1,4 +1,6 @@
 import Proxy from './proxy';
+import * as Auth from './auth';
+
 import * as Middleware from './middleware';
 import * as Cache from './cache';
 import * as Session from './session';
@@ -6,6 +8,7 @@ import * as Session from './session';
 
 const exports = {
   Proxy,
+  Auth,
   Middleware,
   Session,
   Cache
@@ -13,6 +16,7 @@ const exports = {
 
 export {
   Proxy,
+  Auth,
   Middleware,
   Session,
   Cache
