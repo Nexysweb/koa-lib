@@ -958,17 +958,17 @@
     request-promise-native "^1.0.8"
     validator "^12.1.0"
 
-"@nexys/utils@3.5.4":
-  version "3.5.4"
-  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.5.4.tgz#b83f2318c945b74e8ae33ad28c4da122037bec4f"
-  integrity sha512-jAW5tMNhOIK8loAdrYnmORajbZ3yX47vLdKR6c5iAD0m0NUPgaGZUFkyrSEkGi/myruIr/VQ8sMTcQ2TzU3/eg==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-
 "@nexys/utils@^3.2.23":
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.5.3.tgz#28436e4741f86ebcf985ae8e10f1831d2f236db8"
   integrity sha512-AyHbCzqzjoaBcFa0tAD0Jhckhbegw4bjAtAy2HqVqPlMV5cLhgSob+M6QQ1C0+//7hBLUOKW3bcYMsSChswV6g==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+
+"@nexys/utils@^3.5.12":
+  version "3.5.12"
+  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.5.12.tgz#d0250c7ca038a0620bc20d9b6a2add7d06994558"
+  integrity sha512-7W8wvt9yxgYO4EfaW7dpoFZxO+AntZahSgUlUb/L3RuyN4Y6c9mryUHrwrSnev0LOj0Mc78dx74ksTn7D1dQJQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
 

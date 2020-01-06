@@ -42,7 +42,7 @@ export const handler = (messages={}) => async (ctx, next) => {
         }
         default: 
           if (Utils.ds.isEmpty(ctx.body)) {
-            ctx.send(204, 'No Content');
+            ctx.noContent(); // TODO: ctx.body should be null but isn't
           }
       }
     }

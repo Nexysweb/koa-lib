@@ -1,18 +1,18 @@
-import * as Lib from './lib';
+import Proxy from './proxy';
 import * as Middleware from './middleware';
 import * as Cache from './cache';
 import * as Session from './session';
 
 
 const exports = {
-  Lib,
+  Proxy,
   Middleware,
   Session,
   Cache
 };
 
 export {
-  Lib,
+  Proxy,
   Middleware,
   Session,
   Cache

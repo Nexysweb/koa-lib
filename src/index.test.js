@@ -4,8 +4,8 @@ test('index', () => {
   expect(typeof Index).toEqual('object');
 });
 
-test('lib', () => {
-  expect(typeof Index.Lib).toEqual('object');
+test('proxy', () => {
+  expect(typeof Index.Proxy).toEqual('function');
 });
 
 test('middleware', () => {
