@@ -27,6 +27,7 @@ class LocalCache extends Cache {
     });
 
     if (persistent) {
+      // `!!`: casting to boolean
       this.persistent = !!persistent;
       this.file = file;
 
