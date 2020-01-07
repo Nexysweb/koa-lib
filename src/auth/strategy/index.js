@@ -62,7 +62,7 @@ export const local = (options={}) => {
 export const jwt = (options={}) => {
   let handlePayload = null;
 
-  if (!options.handlePayload) {
+  if (options.handlePayload) {
     // NOTE: possible extra checks, claims, roles etc
     handlePayload = options.handlePayload;
   } else {
