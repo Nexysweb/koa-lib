@@ -2,6 +2,8 @@ import passportLocal from 'passport-local';
 import passportJwt from 'passport-jwt';
 import passportOAuth2 from 'passport-oauth2';
 
+import * as Session from '../session';
+
 import { User, HTTP } from '@nexys/lib';
 
 
@@ -54,8 +56,7 @@ export const local = (options={}) => {
   return strategy;
 }
 
-// const secretOrKey = "vO1_<0a=tQiMk?tU]jJn54XnGx<Q73=N@[hRwafJgmbn`j?CndP2=x=kCs^Tbd<3";
-// secretOrKey, // NOTE: string or buffer containing the secret (symmetric) or PEM-encoded public key (asymmetric)
+// NOTE: string or buffer containing the secret (symmetric) or PEM-encoded public key (asymmetric)
 export const jwt = (options={}) => {
   let handlePayload = null;
 
@@ -64,16 +65,16 @@ export const jwt = (options={}) => {
     handlePayload = options.handleJwtPayload;
   } else {
     handlePayload = (payload, _) => {
-      // NOTE: could fetch user session here using sub if necessary
+      // NOTE: using payload of token issued in Nexys product service
       const { sub, auth, admin } = payload;
       const id = Number(sub);
+      // NOTE: could fetch user session here using sub/id if necessary
       return { auth, admin, id };
     }
   }
 
   if (!options.issuer) {
-    // TODO: app host
-    throw new HTTP.Error('Please supply an issuer', 500);
+    throw new HTTP.Error('Please supply an issuer', 500); // NOTE: app host
   }
 
   if (!options.secretOrKey) {
@@ -82,22 +83,23 @@ export const jwt = (options={}) => {
 
   let jwtFromRequest = passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken();
   if (options.fromHeader) {
-    // NOTE: example 'app-token'
+    // NOTE: example 'app-token' in product service
     jwtFromRequest = passportJwt.ExtractJwt.fromHeader(options.fromHeader);
   }
 
   if (options.fromSession) {
     jwtFromRequest = ctx => {
       let token = null;
+
+      // NOTE: because ctx.state is not available
+      const session = Session.get(ctx);
     
-      if (ctx.state.user && ctx.state.user.token) {
+      if (session && session.token) {
         // NOTE: by default use session token for authentication
-        token = ctx.state.user.token;
-        ctx.state.api = false;
+        token = session.token;
       } else {
         // NOTE: fallback to JWT
         token = passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken();
-        ctx.state.api = true;
       }
     
       return token;
@@ -117,7 +119,7 @@ export const jwt = (options={}) => {
     try {
       // NOTE: session already established with local strategy?
       const user = handlePayload(payload, ctx, done); 
-      done(null, user); // NOTE: sets ctx.state.user
+      done(null, user); // NOTE: sets/overrides ctx.state.user
     } catch (err) {
       done(err, null);
     }

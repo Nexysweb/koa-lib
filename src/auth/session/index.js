@@ -5,9 +5,8 @@ import { HTTP } from '@nexys/lib';
 
 export const get = ctx => {
   if (ctx.session) {
-    const session = ctx.session;
-    if (session.token) return session;
-    if (session.passport) return session.passport && session.passport.user;
+    if (ctx.session.token) return ctx.session;
+    if (ctx.session.passport) return Utils.ds.get('passport.user', ctx.session);
 
     return null;
   } else return false;
