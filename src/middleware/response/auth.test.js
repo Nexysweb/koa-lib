@@ -12,7 +12,7 @@ describe('auth handling', () => {
   test('isUnauthenticated', async () => {
     const middleware = [];
     middleware.push(async (ctx, next) => { ctx.isAuthenticated = () => false; await next(); });
-    middleware.push(Middleware.isAuthenticated);
+    middleware.push(Middleware.isAuthenticated());
 
     server = createServer(middleware);
 
@@ -24,7 +24,7 @@ describe('auth handling', () => {
   test('isAuthenticated', async () => {
     const middleware = [];
     middleware.push(async (ctx, next) => { ctx.isAuthenticated = () => true; await next(); });
-    middleware.push(Middleware.isAuthenticated);
+    middleware.push(Middleware.isAuthenticated());
     middleware.push(ctx => ctx.ok('success'));
 
     server = createServer(middleware);
