@@ -965,10 +965,10 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
-"@nexys/utils@^3.5.12":
-  version "3.5.12"
-  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.5.12.tgz#d0250c7ca038a0620bc20d9b6a2add7d06994558"
-  integrity sha512-7W8wvt9yxgYO4EfaW7dpoFZxO+AntZahSgUlUb/L3RuyN4Y6c9mryUHrwrSnev0LOj0Mc78dx74ksTn7D1dQJQ==
+"@nexys/utils@^3.5.13":
+  version "3.5.13"
+  resolved "https://registry.yarnpkg.com/@nexys/utils/-/utils-3.5.13.tgz#780a4e1e43e4afb2576f7f73df7372f5c7a44daf"
+  integrity sha512-coDnTKLntotb5XFePc56iYwrbu54uriVMohwp52JF8fNcxtSOMIkXSFojWid4jGUkz4y2Qd3H1OV76YJtKGLJQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
 

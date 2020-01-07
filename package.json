@@ -10,11 +10,10 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@nexys/lib": "^1.6.27",
-    "@nexys/utils": "^3.5.12",
+    "@nexys/utils": "^3.5.13",
     "dotenv": "^8.2.0",
     "http-proxy": "^1.18.0",
     "ioredis": "^4.14.1",
-    "ioredis-mock": "^4.18.4",
     "koa": "^2.11.0",
     "koa-basic-auth": "^4.0.0",
     "koa-body": "^4.1.1",
@@ -27,19 +26,20 @@
     "koa-router": "^7.4.0",
     "koa-session2": "^2.2.10",
     "koa-useragent": "^3.0.0",
-    "nock": "^11.7.0",
     "node-cache": "^5.1.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.5.0",
-    "path-match": "^1.2.4",
-    "supertest": "^4.0.2"
+    "path-match": "^1.2.4"
   },
   "files": [
     "dist/*"
   ],
   "devDependencies": {
     "@nexys/babelsetup": "^0.0.6",
-    "rimraf": "^3.0.0"
+    "ioredis-mock": "^4.18.4",
+    "nock": "^11.7.0",
+    "rimraf": "^3.0.0",
+    "supertest": "^4.0.2"
   }
 }
