@@ -945,10 +945,10 @@
     dotenv "^8.1.0"
     request-promise-native "^1.0.8"
 
-"@nexys/lib@^1.6.26":
-  version "1.6.26"
-  resolved "https://registry.yarnpkg.com/@nexys/lib/-/lib-1.6.26.tgz#60dbc315b246e4c21d08b41a9921d8b5db045240"
-  integrity sha512-BvgvEltHdaHGdV8JdcCE1CLIgT5er/0X8VwRGixyU9DMIBS2t3pfndX6G77H4HMU/KUoLBUf4Glcnu/apqNqqA==
+"@nexys/lib@^1.6.27":
+  version "1.6.27"
+  resolved "https://registry.yarnpkg.com/@nexys/lib/-/lib-1.6.27.tgz#3645d19735ae2fe19ac848e28e7e232b9be8a5d2"
+  integrity sha512-P7VGhsgXtJLbTMy1jWhNScFVZqyE0OvgD5lR4vBuXlT/3PIjsvhKRrU2wmLH7PITb6yC5ZTuDgIr5tCJqA7m1Q==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@hapi/joi" "^16.1.8"
