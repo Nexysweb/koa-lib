@@ -2373,6 +2373,11 @@ expect@^24.9.0:
     jest-message-util "^24.9.0"
     jest-regex-util "^24.9.0"
 
+express-useragent@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/express-useragent/-/express-useragent-1.0.13.tgz#82f7c252037a388c0412e22a59b2b128574f7e16"
+  integrity sha512-3RGcGuXbyr/t62yyu3CRLFS9Fc30tWiVd6TQ1/C7mdQU4Yv7UPfSvtAkYfqoaH2FMkQvrXD7V/FtpFhy6MfUcg==
+
 ext@^1.1.2:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ext/-/ext-1.4.0.tgz#89ae7a07158f79d35517882904324077e4379244"
@@ -3851,6 +3856,13 @@ koa-session2@^2.2.10:
   version "2.2.10"
   resolved "https://registry.yarnpkg.com/koa-session2/-/koa-session2-2.2.10.tgz#90b83526a8f2e4cdc3e64d421dc0e112bf725d48"
   integrity sha512-5t6uqSvtM2pj0TEeYk/1uluNVKvrWDpEFuyFoOXUtyy4f/Ic3c13OnU+/ku5AKhWxFWshLZ+YGd3F67y0djD1Q==
+
+koa-useragent@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/koa-useragent/-/koa-useragent-3.0.0.tgz#38c05558c0040fb9c18ab775c6adb2a123de55a2"
+  integrity sha512-jX4NkFCHU1ANMid2igFrHsmTT8F92A7kvH6rGF0UfSgUkarcZ/OFi6POxwAxXMYnBm2qCLiHWYEgVJIQcIG9Zw==
+  dependencies:
+    express-useragent "^1.0.13"
 
 koa@^2.11.0:
   version "2.11.0"

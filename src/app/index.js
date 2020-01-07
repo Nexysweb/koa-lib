@@ -54,7 +54,7 @@ export const init = (options={}) => {
   app.use(Respond()); // NOTE: middleware that adds useful methods: send => ok, notFound, badRequest
 
   if (options.agent) {
-    app.use(require('koa-useragent'));
+    app.use(require('koa-useragent').userAgent);
   }
   /***********************/
 

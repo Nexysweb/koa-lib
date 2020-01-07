@@ -1,6 +1,6 @@
 {
   "name": "@nexys/koa-lib",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "scripts": {
     "test": "rimraf dist/ && jest",
     "build": "rimraf dist/ && babel src/ --out-dir dist/;rm dist/*.test.js"
@@ -26,6 +26,7 @@
     "koa-respond": "^2.1.0",
     "koa-router": "^7.4.0",
     "koa-session2": "^2.2.10",
+    "koa-useragent": "^3.0.0",
     "nock": "^11.7.0",
     "node-cache": "^5.1.0",
     "passport-jwt": "^4.0.0",
