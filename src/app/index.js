@@ -14,34 +14,35 @@ import * as Auth from '../auth';
 import { HTTP } from '@nexys/lib';
 
 
-export const routeHandler = (route, filepath, filename) => {
+export const routeHandler = (prefix, filepath, filename) => {
   // NOTE: filepath is relative to root directory
 
   if (filepath) {
-    filepath = path.join(process.cwd(), filepath, filename || route);
+    filepath = path.join(process.cwd(), filepath, filename || prefix);
   } else {
-    console.warn(`Using default path ./src/routes for route ${route}`);
-    filepath = path.join(process.cwd(), '/src/routes', filename || route);
+    console.warn(`Using default path ./src/routes for routes prefix: ${prefix}`);
+    filepath = path.join(process.cwd(), '/src/routes', filename || prefix);
   }
 
-  return Mount(`${route}`, require(filepath).default);
+  return Mount(`${prefix}`, require(filepath).default);
 }
 
 
-function mount(route, middleware) {
-  this.use(Mount(route, middleware));
+function mount(prefix, middleware) {
+  this.use(Mount(prefix, middleware));
 }
 
-function route(route, filepath, filename) {
+function routes(prefix, filepath, filename) {
   // TOOD: use arguments?
-  this.use(routeHandler(route, filepath, filename));
+  this.use(routeHandler(prefix, filepath, filename));
 }
 
 export const init = (options={}) => {
   const app = new Koa();
 
   Object.defineProperty(app, 'mount', { value: mount });
-  Object.defineProperty(app, 'route', { value: route });
+  Object.defineProperty(app, 'routes', { value: routes });
+  // TODO: nested routes via subApp = new Koa() => subApp.routes(...)
 
   /*** CORE MIDDLEWARE ***/
   if (options.production) {

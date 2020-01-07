@@ -37,7 +37,7 @@ router.post('/login', Middleware.Validate.body(loginSchema), ctx => {
 });
 
 // NOTE: route without passport strategy => default passport session strategy has to be used
-router.get('/status', Middleware.isAuthenticated, ctx => { ctx.state.response = ctx.state.user });
+router.get('/status', Middleware.isAuthenticated(), ctx => { ctx.state.response = ctx.state.user });
 
 
 let server = null;
@@ -47,7 +47,8 @@ describe('local', () => {
   // TODO: options.usernameField: 'email'
   // different strategy options
   const options = {};
-  options.handleLogin = jest.fn(async () => Promise.resolve(sessionData));
+  options.handleLogin = jest.fn(() => sessionData);
+  // async alternative: options.handleLogin = jest.fn(async () => Promise.resolve(sessionData));
   Passport.use(Strategy.local(options));
 
   test('init', async () => {
@@ -101,11 +102,11 @@ describe('jwt', () => {
 
   test('init', async () => {
     const options = { fromSession: true, issuer: 'myApp', secretOrKey: 'asdf' };
-    options.handleLogin = jest.fn(async () => Promise.resolve(sessionData));
+    options.handlePayload = jest.fn(() => sessionData);
 
     Passport.use(Strategy.jwt(options));
 
-    router.get('/jwtStatus', Passport.authenticate('jwt'), ctx => { ctx.state.response = ctx.state.user });
+    router.get('/jwtStatus', Middleware.isAuthenticated('jwt'), ctx => { ctx.state.response = ctx.state.user });
 
     const middleware = [Passport.initialize(), Passport.session(), router.routes()];
     const server = createServer(middleware, true)
@@ -120,6 +121,7 @@ describe('jwt', () => {
     expect(response.body).toEqual({ message: 'Unauthorized. Please log in!' });
 
     response = await request(server).get('/jwtStatus').set('Cookie', cookie);
+    expect(response.body).toEqual({ message: 'Unauthorized' });
     // TODO: working dummy token
     // expect(response.status).toBe(200);
     // expect(response.body).toEqual(sessionData);

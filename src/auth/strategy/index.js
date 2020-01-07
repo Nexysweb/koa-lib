@@ -38,6 +38,8 @@ export const local = (options={}) => {
 
   // NOTE: the purpose of the verify callback is to find the user that possesses a set of credentials.
   const verify = async ({ctx}, username, password, done) => {
+    // TODO: use arguments to check if req.ctx is passed
+
     // TODO: understand error handling https://stackoverflow.com/questions/15711127/express-passport-node-js-error-handling
     try {
       const data = await handleLogin(username, password, ctx, done);
@@ -62,7 +64,7 @@ export const jwt = (options={}) => {
 
   if (!options.handlePayload) {
     // NOTE: possible extra checks, claims, roles etc
-    handlePayload = options.handleJwtPayload;
+    handlePayload = options.handlePayload;
   } else {
     handlePayload = (payload, _) => {
       // NOTE: using payload of token issued in Nexys product service
@@ -70,12 +72,18 @@ export const jwt = (options={}) => {
       const id = Number(sub);
       // NOTE: could fetch user session here using sub/id if necessary
       return { auth, admin, id };
+      // done
     }
   }
 
-  if (!options.issuer) {
-    throw new HTTP.Error('Please supply an issuer', 500); // NOTE: app host
-  }
+  /*
+    // NOTE: recommended, but not mandatory
+    // Nexys user tokens have app host as issuer (issuer cannot be specified before runtime in product service)
+
+    if (!options.issuer) {
+      throw new HTTP.Error('Please supply an issuer', 500); // NOTE: app host
+    }
+  */
 
   if (!options.secretOrKey) {
     throw new HTTP.Error('Please supply a publicKey or secret', 500);
@@ -115,11 +123,13 @@ export const jwt = (options={}) => {
   };
   
   // NOTE: this verify callback is only called if jwt present and decoding is successful
-  const verify = ({ctx}, payload, done) => {
+  const verify = async ({ctx}, payload, done) => {
+    // TODO: use arguments to check if req.ctx is passed
+
     try {
       // NOTE: session already established with local strategy?
-      const user = handlePayload(payload, ctx, done); 
-      done(null, user); // NOTE: sets/overrides ctx.state.user
+      const data = await handlePayload(payload, ctx); 
+      done(null, data); // NOTE: sets/overrides ctx.state.user
     } catch (err) {
       done(err, null);
     }

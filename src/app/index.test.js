@@ -37,7 +37,7 @@ describe('init', () => {
 
   test('with route', async () => {
     const app = App.init();
-    app.route('/test', null, 'test-route');
+    app.routes('/test', null, 'test-route');
     expect(app.middleware.length).toBe(5);
 
     const server = app.listen();
