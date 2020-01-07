@@ -5,13 +5,9 @@ import * as Errors from './error';
 import * as Response from './response';
 import * as Validate from './validate';
 import * as Request from './request';
-import * as Mount from './mount';
-
-// DEPRECATED
-import Init from './init';
 
 
-export { Errors, Response, Validate, Request, Mount, Init };
+export { Errors, Response, Validate, Request };
 
 
 /*** AUTH MIDDLEWARE ***/

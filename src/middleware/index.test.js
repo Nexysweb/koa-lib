@@ -12,13 +12,4 @@ test('routes', () => {
   expect(typeof Index.routes).toEqual('function');
 });
 
-test('Mount', () => {
-  expect(typeof Index.Mount).toEqual('object');
-});
-
-test('Init', () => {
-  expect(typeof Index.Init).toEqual('object');
-});
-
-
 // TODO: test hasPermissions / isAuthorized (session setup)
