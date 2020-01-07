@@ -31,8 +31,8 @@ describe('route handler', () => {
 
 describe('init', () => {
   test('default', () => {
-    const app = App.init();
-    expect(app.middleware.length).toBe(4);
+    const app = App.init({ agent: true });
+    expect(app.middleware.length).toBe(5);
   });
 
   test('with route', async () => {
