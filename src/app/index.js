@@ -14,17 +14,17 @@ import * as Auth from '../auth';
 import { HTTP } from '@nexys/lib';
 
 
+const getRoutesPath = (production, prefix) => {
+  const filepath = `${production ? '/dist' : '/src'}/routes`;
+  console.warn(`Using default path .${filepath} for routes prefix: ${prefix}`);
+  return filepath;
+}
+
+// TODO: best way to make production flag available?
 export const routeHandler = (prefix, filepath, filename) => {
   // NOTE: filepath is relative to root directory
-
-  if (filepath) {
-    filepath = path.join(process.cwd(), filepath, filename || prefix);
-  } else {
-    console.warn(`Using default path ./src/routes for routes prefix: ${prefix}`);
-    filepath = path.join(process.cwd(), '/src/routes', filename || prefix);
-  }
-
-  return Mount(`${prefix}`, require(filepath).default);
+  const fullPath = path.join(process.cwd(), filepath, filename || prefix);
+  return Mount(`${prefix}`, require(fullPath).default);
 }
 
 
@@ -34,11 +34,17 @@ function mount(prefix, middleware) {
 
 function routes(prefix, filepath, filename) {
   // TOOD: use arguments?
+
+  if (!filepath) {
+    filepath = getRoutesPath(this.context.production, prefix);
+  }
+
   this.use(routeHandler(prefix, filepath, filename));
 }
 
 export const init = (options={}) => {
   const app = new Koa();
+  app.context.production = options.production;
 
   Object.defineProperty(app, 'mount', { value: mount });
   Object.defineProperty(app, 'routes', { value: routes });

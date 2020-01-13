@@ -9,7 +9,8 @@ import * as App from './index';
 describe('route handler', () => {
   test('default', async () => {
     const app = new Koa();
-    const middleware = App.routeHandler('/test', null, 'test-route');
+    // TODO: '/test', null, 'test-route' - production flag
+    const middleware = App.routeHandler('/test', '/src/routes', 'test-route');
     app.use(middleware);
 
     expect(app.middleware.length).toBe(1);
