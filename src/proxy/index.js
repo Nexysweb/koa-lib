@@ -228,14 +228,15 @@ class Proxy {
       const response = await Lib.Request.call(ctx, resolveResponse);
 
       if (response.headers) {
+        const contentType = response.headers['content-type'];
+
         const contentDisposition = response.headers['content-disposition'];
         if (contentDisposition && contentDisposition.startsWith('attachment')) {
           ctx.set('content-disposition', contentDisposition);
           ctx.set('content-type', contentType);
         }
 
-        const contentType = response.headers['content-type'];
-        if (contentType && contentType == 'application/octet-stream') {
+        if (contentType && contentType === 'application/octet-stream') {
           ctx.set('content-type', contentType);
         }
 
