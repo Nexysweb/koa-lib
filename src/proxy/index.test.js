@@ -141,11 +141,30 @@ describe("proxy with hooks", () => {
       .reply(200, { hello: 'world' });
 
     const response = await request(server).get('/another/test/again');
-
     expect(response.status).toEqual(400);
     expect(response.type).toEqual('application/json'); // 'text/plain');
     expect(response.body).toEqual({ message: 'test' }); // 'test');
   });
 
-  // tbc...
+  test('attachment', async () => {
+    nock('https://hook.proxy')
+      .get('/test/again')
+      .matchHeader('authorization', 'Bearer TOKEN')
+      .query({hello: 'world'})
+      .replyWithFile(200, __dirname + '/dummy.pdf', {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment'
+      });
+  
+    const response = await request(server).get('/another/test/again');
+    expect(response.status).toEqual(200);
+    expect(response.headers).toEqual(
+      expect.objectContaining({
+        'content-type': 'application/pdf'
+      })
+    );
+    expect(response.body).toEqual(expect.any(Buffer));
+  });
 });
+
+// TODO: test attachment
