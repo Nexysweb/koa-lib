@@ -14,11 +14,7 @@ describe('configure', () => {
       usernameField: 'email'
     };
 
-    const options = {
-      strategies: [local]
-    };
-
-    const strategies = Auth.configure(options, Passport);
+    const strategies = Auth.configure({ strategies: [local] }, Passport);
     const [strategy] = strategies;
     expect(strategy.name).toEqual('local');
     expect(strategy._usernameField).toEqual('email');
@@ -32,11 +28,7 @@ describe('configure', () => {
       usernameField: 'email'
     };
 
-    const options = {
-      strategies: [local]
-    };
-
-    expect(() => { Auth.configure(options, Passport); }).toThrow(HTTP.Error);
+    expect(() => { Auth.configure({ strategies: [local] }, Passport); }).toThrow(HTTP.Error);
   });
 
   test('local - handler', () => {
@@ -45,11 +37,7 @@ describe('configure', () => {
       handleLogin: () => {},
     };
 
-    const options = {
-      strategies: [local]
-    };
-
-    const strategies = Auth.configure(options, Passport);
+    const strategies = Auth.configure({ strategies: [local] }, Passport);
     const [strategy] = strategies;
     expect(strategy.name).toEqual('local')
   });
@@ -60,11 +48,7 @@ describe('configure', () => {
       issuer: 'appName' 
     };
 
-    const options = {
-      strategies: [jwt]
-    };
-
-    expect(() => { Auth.configure(options, Passport); }).toThrow(HTTP.Error);
+    expect(() => { Auth.configure({ strategies: [jwt] }, Passport); }).toThrow(HTTP.Error);
   });
 
   test('jwt', () => {
@@ -75,18 +59,33 @@ describe('configure', () => {
       passReqToCallback: false
     };
 
-    const options = {
-      strategies: [jwt]
-    };
-
-    const strategies = Auth.configure(options, Passport);
+    const strategies = Auth.configure({ strategies: [jwt] }, Passport);
     const [strategy] = strategies;
     expect(strategy.name).toEqual('jwt');
     expect(strategy._verifOpts.issuer).toEqual('appName');
     expect(strategy._passReqToCallback).toBe(false);
   });
 
-  // TODO: oauth2
+  test('oauth2', () => {
+    const oauth2 = {
+      type: 'oauth2',
+      client: {
+        id: 'test',
+        secret: 'test'
+      },
+      prefix: 'prefix',
+      callbackURL: `https://host/redirect`,
+      handleLogin: () => {}
+    };
+
+    const strategies = Auth.configure({ strategies: [oauth2] }, Passport);
+    const [strategy] = strategies;
+
+    expect(strategy.name).toEqual('oauth2');
+    expect(typeof strategy._verify).toBe('function');
+    expect(strategy._callbackURL).toEqual('https://host/redirect');
+  });
+
   test('combined', () => {
     let strategies = [{
       type: 'local',
