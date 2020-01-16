@@ -86,6 +86,17 @@ describe('configure', () => {
     expect(strategy._callbackURL).toEqual('https://host/redirect');
   });
 
+  test('oauth2 - missing client', () => {
+    const oauth2 = {
+      type: 'oauth2',
+      prefix: 'prefix',
+      callbackURL: `https://host/redirect`,
+      handleLogin: () => {}
+    };
+
+    expect(() => { Auth.configure({ strategies: [oauth2] }, Passport); }).toThrow(HTTP.Error);
+  });
+
   test('combined', () => {
     let strategies = [{
       type: 'local',
