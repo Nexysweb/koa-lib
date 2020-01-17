@@ -43,7 +43,13 @@ function routes(prefix, filepath, filename) {
 }
 
 export const init = (options={}) => {
-  const app = new Koa();
+  // when init the Koa app allow for the backend to return `null`
+  // https://github.com/koajs/koa/pull/1421
+  const app = new Koa({
+    response: {
+      emptyBodyAs204: false
+    }
+  });
   app.context.production = options.production;
 
   Object.defineProperty(app, 'mount', { value: mount });
