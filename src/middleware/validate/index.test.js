@@ -29,6 +29,32 @@ describe('response handling', () => {
     expect(response.body).toEqual({ uuid });
   });
 
+  test('validate request body', async () => {
+    const schema = {
+      uuid: Joi.string().required(),
+      params: Joi.object().optional(),
+      data: Joi.any().optional()
+    };
+
+    const uuid = '6cad20a1-25cb-4bb8-ae68-87370a08c96b';
+
+    const router = new Router();
+    router.post('/request', Validate.body(schema, { parser: { multipart: true }}), ctx => { ctx.ok(ctx.request.files.data) });
+    server = createServer([router.routes()]);
+
+    const response = await request(server)
+      .post('/request')
+      .field('uuid', uuid)
+      .attach('data', __dirname + '/dummy.pdf');
+
+    expect(response.status).toBe(200);
+
+    const { body } = response;
+    expect(body.name).toEqual('dummy.pdf');
+    expect(body.type).toEqual('application/pdf');
+    expect(body.size).toEqual(13264);
+  });
+
   test('validate request params', async () => {
     const schema = {
       name: Joi.string(),
@@ -47,4 +73,6 @@ describe('response handling', () => {
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ 'params.id': [ 'number.base' ] });
   });
+
+  // TODO: support multipart  
 });
