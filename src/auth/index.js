@@ -24,7 +24,11 @@ export const configure = (options, Passport) => {
         return Strategy.oAuth2(options);
       }
       default: {
-        console.warn('Strategy `type` not specificed');
+        if (options.hasOwnProperty('_verify')) {
+          return options;
+        }
+
+        console.warn('Strategy `type` not specified');
       }
     }
   });

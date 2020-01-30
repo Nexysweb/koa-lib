@@ -109,7 +109,7 @@ describe('jwt', () => {
     router.get('/jwtStatus', Middleware.isAuthenticated('jwt'), ctx => { ctx.state.response = ctx.state.user });
 
     const middleware = [Passport.initialize(), Passport.session(), router.routes()];
-    const server = createServer(middleware, true)
+    const server = createServer(middleware, true);
 
     let response = await request(server).post('/login').send({ username: 'john.smith', password: '123456Aa' });
     expect(response.status).toBe(200);
@@ -130,4 +130,30 @@ describe('jwt', () => {
   });
 });
 
-// TODO: oauth
+describe('oauth2', () => {
+  test('redirect', async () => {
+    const options = {
+      name: 'sso',
+      type: 'oauth2',
+      prefix: 'https://example.com',
+      client: {
+        id: 'asdf',
+        secret: 'asdf'
+      },
+      callbackURL: `http://localhost/redirect`,
+    };
+    options.handleLogin = jest.fn(() => sessionData);
+
+    const strategy = Strategy.oAuth2(options);
+    Passport.use(strategy);
+
+    router.get('/auth', Passport.authenticate('sso'));
+
+    const middleware = [Passport.initialize(), Passport.session(), router.routes()];
+    const server = createServer(middleware);
+
+    await request(server).get('/auth').expect(302);
+
+    server.close();
+  });
+});

@@ -145,11 +145,6 @@ export const jwt = (options={}) => {
 }
 
 export const oAuth2 = (options={}) => {
-  if (!options.prefix) {
-    // example: `https://${w3id.issuer}/oidc/endpoint/amapp-runtime-oidcidp`;
-    throw new HTTP.Error('Missing authorization & token URL prefix', 500);
-  }
-
   if (!options.client) {
     throw new HTTP.Error('Missing client credentials `client.id`, `client.secret`', 500);
   }
@@ -162,13 +157,23 @@ export const oAuth2 = (options={}) => {
     throw new HTTP.Error('Please define a login handler `handleLogin`', 500);
   }
 
-  const { prefix, client, callbackURL } = options;
+  if (!options.authorizationURL && !options.tokenURL && !options.prefix) {
+    // example: `https://${w3id.issuer}/oidc/endpoint/amapp-runtime-oidcidp`;
+    throw new HTTP.Error('Missing authorization & token URL prefix', 500);
+  }
+
+  const {
+    authorizationURL=(options.prefix + '/authorize'),
+    tokenURL=(options.prefix + '/token'),
+    client,
+    callbackURL
+  } = options;
 
   // NOTE: scopes - optional (https://oauth.net/2/scope); scope: 'openid'
   const config = {
     passReqToCallback: true,
-    authorizationURL: prefix + '/authorize',
-    tokenURL: prefix + '/token',
+    authorizationURL,
+    tokenURL,
     clientID: client.id,
     clientSecret: client.secret,
     callbackURL
