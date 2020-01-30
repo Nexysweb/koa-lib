@@ -40,6 +40,8 @@ export const handler = (messages={}) => async (ctx, next) => {
           ctx.notFound(messages.notFound || 'Not found. The requested route does not exist');
           break;
         }
+        case 302: // redirect
+          break;
         default: 
           if (Utils.ds.isEmpty(ctx.body)) {
             ctx.noContent(); // TODO: ctx.body should be null but isn't
