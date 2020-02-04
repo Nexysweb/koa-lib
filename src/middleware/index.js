@@ -18,7 +18,7 @@ export const isBasicAuthenticated = (username, password) => basicAuth({name: use
 export const isAuthenticated = (name, config={session: false}) => {
   // NOTE: we can add a custom callback in the place of `failureRedirect`: http://www.passportjs.org/docs/authenticate/#custom-callback
 
-  // TODO: specify redirect if not logged in
+  // TODO: specify redirect if not logged in, see bottom of file
   if (name) {
     // NOTE: authentication middleware for any strategy
     return passport.authenticate(name, config);
@@ -61,12 +61,12 @@ export const isAuthorized = permissions => compose([isAuthenticated(), hasPermis
 // NOTE: assuming roles: user (default), admin; more roles: hasRole('admin')
 // https://stackoverflow.com/questions/45025613/role-based-jwt-authorization
 export const hasAdminRights = async (ctx, next) => {
-  const { isAdmin } = ctx.state.user;
+  const { isAdmin, admin } = ctx.state.user;
 
-  if (isAdmin) {
+  if (isAdmin || admin) {
     await next();
   } else {
-    // TODO: specify redirect to app if not admin 
+    // TODO: specify redirect to app if not admin, see bottom of file
     ctx.throw(401, 'Unauthorized. Missing the required role `admin`');
   }
 }
@@ -80,3 +80,29 @@ export const isAdmin = compose([isAuthenticated(), hasAdminRights]);
   - 501 Not Implemented as appropriate.
 */
 export const routes = router => compose([router.routes(), router.allowedMethods()]);
+
+
+const fallback = (middlewares, errors, ctx, next) => {
+  const middleware = middlewares.shift();
+  middleware(ctx, next).catch(err => {
+    if (middlewares.length > 0) {
+      errors.push(err);
+      fallback(middlewares, errors, ctx, next);
+    } else {
+      throw errors.shift();
+    }
+  });
+}
+
+export const or = (...middlewares) => (ctx, next) => fallback(middlewares, [], ctx, next);
+
+/*
+  redirect upon unauthorized
+
+  const { referer } = ctx.request.headers;
+  const uri = stripApp(referer.substring(referer.indexOf("/app")));
+  if (uri.length > 1) {
+    const redirectUri = encodeURIComponent(uri);
+    ctx.redirect(`/login?target=${redirectUri}`);
+  } else ctx.unauthorized({redirect: true, uri: '/'});
+*/
