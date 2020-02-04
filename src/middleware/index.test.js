@@ -61,7 +61,7 @@ describe('auth middleware', () => {
   });
 
   // NOTE: after all async?
-  afterAll(() => app.close());
+  afterAll(() => server.close());
 
   test('auth', async () => {
     const response = await request(server).get('/auth').set('Cookie', cookie);
