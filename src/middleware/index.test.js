@@ -82,7 +82,21 @@ describe('auth middleware', () => {
     expect(response.text).toBe('basic');
   });
 
-  test('auth OR basic auth', async () => {
+  test('or - edge cases', async () => {
+    try {
+      await Middleware.or()({}, () => {});
+    } catch (err) {
+      expect(err.body).toEqual('Please provide at least two middleware functions to .or()');
+    }
+
+    try {
+      await Middleware.or(Middleware.isAuthenticated())({}, () => {});
+    } catch (err) {
+      expect(err.body).toEqual('Please provide at least two middleware functions to .or()');
+    }
+  });
+
+  test('or - auth and basic auth', async () => {
     let response = await request(server).get('/or').auth('user', 'pass', { type: 'basic' });
     expect(response.status).toBe(200);
     expect(response.text).toBe('basic');
@@ -92,7 +106,7 @@ describe('auth middleware', () => {
     expect(response.text).toBe('authenticated');
   });
 
-  test('OR controller error', async () => {
+  test('or - controller error', async () => {
     const response = await request(server).get('/orerror').set('Cookie', cookie);
     console.log(response.body);
     expect(response.status).toBe(400);

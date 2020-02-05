@@ -7,6 +7,8 @@ import * as Response from './response';
 import * as Validate from './validate';
 import * as Request from './request';
 
+import { HTTP } from '@nexys/lib';
+
 
 export { Errors, Response, Validate, Request };
 
@@ -83,15 +85,15 @@ export const routes = router => compose([router.routes(), router.allowedMethods(
 
 
 const fallback = async (middlewares, errors, ctx, next) => {
-  const middleware = middlewares.shift();
+  const [middleware, ...rest] = middlewares;
   try {
     await middleware(ctx, next);
   } catch (err) {
     // NOTE: handle if user unauthorized for auth approach
     if (err.status === 401) {
-      if (middlewares.length > 0) {
+      if (rest.length > 0) {
         errors.push(err);
-        await fallback(middlewares, errors, ctx, next);
+        await fallback(rest, errors, ctx, next);
       } else {
         throw errors.shift();
       }
@@ -102,7 +104,13 @@ const fallback = async (middlewares, errors, ctx, next) => {
   }
 }
 
-export const or = (...middlewares) => (ctx, next) => fallback(middlewares, [], ctx, next);
+export const or = (...middlewares) => async (ctx, next) => {
+  if (middlewares.length < 2) {
+    throw new HTTP.Error('Please provide at least two middleware functions to .or()');
+  }
+
+  await fallback(middlewares, [], ctx, next);
+}
 
 /*
   redirect upon unauthorized
