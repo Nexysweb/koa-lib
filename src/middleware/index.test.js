@@ -52,7 +52,9 @@ describe('auth middleware', () => {
     router.get('/admin', Middleware.isAdmin, ctx => ctx.body = ctx.session.passport.user);
     router.get('/basic', Middleware.isBasicAuthenticated('user', 'pass'), ctx => ctx.body = 'basic');
     router.get('/or', Middleware.or(Middleware.isAdmin, Middleware.isBasicAuthenticated('user', 'pass')), ctx => ctx.body = 'basic');
-
+    router.get('/orauth', Middleware.or(Middleware.isAuthenticated(), Middleware.isBasicAuthenticated('user', 'pass')), ctx => ctx.body = 'authenticated');
+    router.get('/orerror', Middleware.or(Middleware.isAuthenticated(), Middleware.isBasicAuthenticated('user', 'pass')), ctx => { ctx.throw(400, 'Something went wrong'); });
+    
     app.use(router.routes());
     server = app.listen();
 
@@ -81,9 +83,19 @@ describe('auth middleware', () => {
   });
 
   test('auth OR basic auth', async () => {
-    const response = await request(server).get('/or').auth('user', 'pass', { type: 'basic' });
+    let response = await request(server).get('/or').auth('user', 'pass', { type: 'basic' });
     expect(response.status).toBe(200);
     expect(response.text).toBe('basic');
+
+    response = await request(server).get('/orauth').set('Cookie', cookie);
+    expect(response.status).toBe(200);
+    expect(response.text).toBe('authenticated');
+  });
+
+  test('OR controller error', async () => {
+    const response = await request(server).get('/orerror').set('Cookie', cookie);
+    console.log(response.body);
+    expect(response.status).toBe(400);
   });
 
   // TODO: test hasPermissions / isAuthorized (session setup)

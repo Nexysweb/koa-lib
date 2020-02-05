@@ -82,16 +82,24 @@ export const isAdmin = compose([isAuthenticated(), hasAdminRights]);
 export const routes = router => compose([router.routes(), router.allowedMethods()]);
 
 
-const fallback = (middlewares, errors, ctx, next) => {
+const fallback = async (middlewares, errors, ctx, next) => {
   const middleware = middlewares.shift();
-  middleware(ctx, next).catch(err => {
-    if (middlewares.length > 0) {
-      errors.push(err);
-      fallback(middlewares, errors, ctx, next);
+  try {
+    await middleware(ctx, next);
+  } catch (err) {
+    // NOTE: handle if user unauthorized for auth approach
+    if (err.status === 401) {
+      if (middlewares.length > 0) {
+        errors.push(err);
+        await fallback(middlewares, errors, ctx, next);
+      } else {
+        throw errors.shift();
+      }
     } else {
-      throw errors.shift();
+      // NOTE: pass on controller / service errors
+      throw err;
     }
-  });
+  }
 }
 
 export const or = (...middlewares) => (ctx, next) => fallback(middlewares, [], ctx, next);
