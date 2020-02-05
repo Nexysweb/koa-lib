@@ -166,7 +166,8 @@ export const oAuth2 = (options={}) => {
     authorizationURL=(options.prefix + '/authorize'),
     tokenURL=(options.prefix + '/token'),
     client,
-    callbackURL
+    callbackURL,
+    scope
   } = options;
 
   // NOTE: scopes - optional (https://oauth.net/2/scope); scope: 'openid'
@@ -178,6 +179,10 @@ export const oAuth2 = (options={}) => {
     clientSecret: client.secret,
     callbackURL
   };
+
+  if (scope) {
+    config.scope = scope;
+  }
 
   const verify = async ({ctx}, accessToken, refreshToken, params, profile, done) => {
     try { 
