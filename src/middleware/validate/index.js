@@ -1,6 +1,7 @@
 import bodyParser from 'koa-body';
 
 import { Validation } from '@nexys/lib';
+import Utils from '@nexys/utils';
 
 
 export const body = (schema, options={}) => async (ctx, next) => {
@@ -10,11 +11,9 @@ export const body = (schema, options={}) => async (ctx, next) => {
   
   const { body } = ctx.request;
 
-  if (options.hasOwnProperty('parser')) {
-    delete options.parser;
-  }
+  const valOpts = Utils.ds.removeProp(options, 'parser');
 
-  await Validation.validate(body, schema, options);
+  await Validation.validate(body, schema, valOpts);
 
   await next();
 };

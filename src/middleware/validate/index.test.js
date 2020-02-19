@@ -42,7 +42,7 @@ describe('response handling', () => {
     router.post('/request', Validate.body(schema, { parser: { multipart: true }}), ctx => { ctx.ok(ctx.request.files.data) });
     server = createServer([router.routes()]);
 
-    const response = await request(server)
+    let response = await request(server)
       .post('/request')
       .field('uuid', uuid)
       .attach('data', __dirname + '/dummy.pdf');
@@ -53,6 +53,20 @@ describe('response handling', () => {
     expect(body.name).toEqual('dummy.pdf');
     expect(body.type).toEqual('application/pdf');
     expect(body.size).toEqual(13264);
+
+    response = await request(server)
+    .post('/request')
+    .field('uuid', uuid)
+    .attach('data', __dirname + '/dummy.pdf');
+
+    expect(response.status).toBe(200);
+
+    response = await request(server)
+    .post('/request')
+    .field('uuid', uuid)
+    .attach('data', __dirname + '/dummy.pdf');
+
+    expect(response.status).toBe(200);
   });
 
   test('validate request params', async () => {
