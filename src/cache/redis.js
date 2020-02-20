@@ -70,7 +70,7 @@ class RedisCache extends ServiceCache {
   async quit() {
     // NOTE: close connection safely 
     return await this.client.quit();
-  };
+  }
 }
 
 export default RedisCache;

@@ -23,7 +23,7 @@ export const params = (schema, options={}) => async (ctx, next) => {
 
   // TODO: type coercion util
   for (const key in params) {
-    if (params.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(params, key)) {
       const param = params[key];
       if (!isNaN(param)) {
         params[key] = Number(param);

@@ -42,8 +42,7 @@ export const reshape = ({user, token=null}) => {
 export const logIn = async (ctx, data, extend) => {
   // expect data.user, data.token
 
-  // TODO: Utils.isAsync
-  if (modify && modify.constructor.name === 'AsyncFunction') {
+  if (extend && extend.constructor.name === 'AsyncFunction') {
     throw new HTTP.Error('Session modifier function should be asynchronous', 500);
   }
 
@@ -54,7 +53,7 @@ export const logIn = async (ctx, data, extend) => {
 
   let session = reshape(data);
 
-  if (modify) {
+  if (extend) {
     session = await extend(session);
   }
 

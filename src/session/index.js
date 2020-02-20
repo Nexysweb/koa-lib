@@ -8,7 +8,11 @@ import Redis from './redis';
 // NOTE: taken from koa-session2 https://github.com/Secbone/koa-session2/blob/master/index.js
 // tests are available here: https://github.com/Secbone/koa-session2/blob/master/test/test.js
 const middleware = (opts={}) => {
-  const { key='koa:sess', store=new Store() } = opts;
+  const { key='koa:sess', store } = opts;
+
+  if (!store) {
+    throw Error('Please provide a session store');
+  }
 
   return async (ctx, next) => {
     let id = ctx.cookies.get(key, opts);
