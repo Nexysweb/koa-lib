@@ -7,6 +7,8 @@ import * as Response from './response';
 import * as Validate from './validate';
 import * as Request from './request';
 
+import * as Types from '../session/types';
+
 import { HTTP } from '@nexys/lib';
 
 
@@ -14,10 +16,10 @@ export { Errors, Response, Validate, Request };
 
 
 /*** AUTH MIDDLEWARE ***/
-export const isBasicAuthenticated = (username, password) => basicAuth({name: username, pass: password});
+export const isBasicAuthenticated = (username:string, password:string) => basicAuth({name: username, pass: password});
 
 // NOTE: disabling sessions (API server) http://www.passportjs.org/docs/authenticate/#disable-sessions
-export const isAuthenticated = (name, config={session: false}) => {
+export const isAuthenticated = (name:string, config:{session: boolean} = {session: false}) => {
   // NOTE: we can add a custom callback in the place of `failureRedirect`: http://www.passportjs.org/docs/authenticate/#custom-callback
 
   // TODO: specify redirect if not logged in, see bottom of file
@@ -40,16 +42,16 @@ export const isAuthenticated = (name, config={session: false}) => {
 // calls user strategy but does not add user data to state.user
 
 // NOTE: verify function passed in place of config 
-export const authenticate = (name, verify) => passport.authenticate(name, verify);
+export const authenticate = (name:string, verify) => passport.authenticate(name, verify);
 
-export const hasPermissions = permissions => async (ctx, next) => {
-  const { auth, permissions: perms } = ctx.state.user;
+export const hasPermissions = (permissions:string[]) => async (ctx, next) => {
+  const userSession:Types.UserSession = ctx.state.user;
 
   if (!Array.isArray(permissions)) {
     permissions = [permissions];
   }
 
-  const authorized = permissions.every(p => auth.includes(p) || perms.includes(p));
+  const authorized:boolean = permissions.every(p => user.permissions.includes(p));
 
   if (authorized) {
     await next();
@@ -58,14 +60,15 @@ export const hasPermissions = permissions => async (ctx, next) => {
   }
 }
 
-export const isAuthorized = permissions => compose([isAuthenticated(), hasPermissions(permissions)]);
+export const isAuthorized = (permissions:string[]) => compose([isAuthenticated(), hasPermissions(permissions)]);
 
 // NOTE: assuming roles: user (default), admin; more roles: hasRole('admin')
 // https://stackoverflow.com/questions/45025613/role-based-jwt-authorization
 export const hasAdminRights = async (ctx, next) => {
-  const { isAdmin, admin } = ctx.state.user;
-
-  if (isAdmin || admin) {
+  const userSession:Types.UserSession = ctx.state.user;
+  
+  // todo: remove `.admin`
+  if (userSession.isAdmin || userSession.admin) {
     await next();
   } else {
     // TODO: specify redirect to app if not admin, see bottom of file
