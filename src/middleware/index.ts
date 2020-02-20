@@ -7,6 +7,8 @@ import * as Response from './response';
 import * as Validate from './validate';
 import * as Request from './request';
 
+// https://github.com/eslint/typescript-eslint-parser/issues/457
+/* eslint-ignore no-unused-vars */
 import * as Types from '../session/types';
 
 import { HTTP } from '@nexys/lib';
@@ -19,7 +21,7 @@ export { Errors, Response, Validate, Request };
 export const isBasicAuthenticated = (username:string, password:string) => basicAuth({name: username, pass: password});
 
 // NOTE: disabling sessions (API server) http://www.passportjs.org/docs/authenticate/#disable-sessions
-export const isAuthenticated = (name:string, config:{session: boolean} = {session: false}) => {
+export const isAuthenticated = (name:string = undefined, config:{session: boolean} = {session: false}) => {
   // NOTE: we can add a custom callback in the place of `failureRedirect`: http://www.passportjs.org/docs/authenticate/#custom-callback
 
   // TODO: specify redirect if not logged in, see bottom of file
@@ -51,7 +53,7 @@ export const hasPermissions = (permissions:string[]) => async (ctx, next) => {
     permissions = [permissions];
   }
 
-  const authorized:boolean = permissions.every(p => user.permissions.includes(p));
+  const authorized:boolean = permissions.every(p => userSession.permissions.includes(p));
 
   if (authorized) {
     await next();

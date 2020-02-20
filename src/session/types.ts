@@ -8,7 +8,7 @@ export interface OptionSet {
   name: string
 }
 
-export interface SessionUser {
+export interface UserSession {
   profile: Profile,
   language: OptionSet,
   id: number,

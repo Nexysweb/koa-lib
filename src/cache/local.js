@@ -44,13 +44,13 @@ class LocalCache extends Cache {
       if (json) {
         const data = JSON.parse(json);
         for (const [key, val] of Object.entries(data)) {
-          if (data.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(data, key)) {
             this.cache.set(key, val);
           }
         }
       }
     }
-  };
+  }
 
   async save(dir=process.cwd()) {
     const keys = this.cache.keys();

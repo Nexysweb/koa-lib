@@ -43,9 +43,11 @@ export const logIn = async (ctx, data, extend) => {
   // expect data.user, data.token
 
   // TODO: Utils.isAsync
+  // 46:7   error  'modify' is not defined  
+  /*
   if (modify && modify.constructor.name === 'AsyncFunction') {
     throw new HTTP.Error('Session modifier function should be asynchronous', 500);
-  }
+  }*/
 
   if (!ctx.login) {
     // TODO: is there a better way

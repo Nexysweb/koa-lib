@@ -23,7 +23,7 @@ export const local = (options={}) => {
 
     const UserService = User.init(host, auth);
 
-    handleLogin = async (username, password, ctx, _) => {
+    handleLogin = async (username, password, ctx) => {
       return await UserService.logIn(username, password, ctx.state);
     }
   } else {
@@ -66,7 +66,7 @@ export const jwt = (options={}) => {
     // NOTE: possible extra checks, claims, roles etc
     handlePayload = options.handlePayload;
   } else {
-    handlePayload = (payload, _) => {
+    handlePayload = (payload) => {
       // NOTE: using payload of token issued in Nexys product service
       const { sub, auth, admin } = payload;
       const id = Number(sub);
