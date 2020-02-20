@@ -57,6 +57,7 @@ describe('error handling', () => {
   }); 
 
   test('reference error', async () => {
+    // eslint-disable-next-line
     const middleware = [() => { ctx.body = 'test'; }];
     server = createServer(middleware);
 

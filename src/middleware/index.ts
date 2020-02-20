@@ -8,8 +8,9 @@ import * as Validate from './validate';
 import * as Request from './request';
 
 // https://github.com/eslint/typescript-eslint-parser/issues/457
-/* eslint-ignore no-unused-vars */
+/* eslint-disable no-unused-vars */
 import * as Types from '../session/types';
+/* eslint-disable no-unused-vars */
 
 import { HTTP } from '@nexys/lib';
 
