@@ -57,7 +57,7 @@ describe('error handling', () => {
   }); 
 
   test('reference error', async () => {
-    const middleware = [ctx => { ctx.body = 'test'; }];
+    const middleware = [() => { ctx.body = 'test'; }];
     server = createServer(middleware);
 
     const response = await request(server).get('/');
