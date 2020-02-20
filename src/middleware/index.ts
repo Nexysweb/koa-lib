@@ -67,8 +67,7 @@ export const isAuthorized = (permissions:string[]) => compose([isAuthenticated()
 export const hasAdminRights = async (ctx, next) => {
   const userSession:Types.UserSession = ctx.state.user;
   
-  // todo: remove `.admin`
-  if (userSession.isAdmin || userSession.admin) {
+  if (userSession.isAdmin && userSession.isAdmin === true) {
     await next();
   } else {
     // TODO: specify redirect to app if not admin, see bottom of file
