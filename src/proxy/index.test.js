@@ -36,7 +36,7 @@ const hookProxy = new Proxy('/another/test', {
       }
     },
     after: {
-      manipulation: (ctx, body, _) => {
+      manipulation: (ctx, body) => {
         if (body && body.hello === 'world') {
           ctx.status = 400;
           ctx.body = { message: 'test' };

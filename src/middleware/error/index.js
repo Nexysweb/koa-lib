@@ -1,4 +1,4 @@
-export const logger = (err, _) => {
+export const logger = (err) => {
   if (err) {
     console.error(new Date().toISOString() + ' - Server error: \n' + err.toString());
   }

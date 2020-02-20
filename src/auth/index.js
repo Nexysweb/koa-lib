@@ -24,7 +24,7 @@ export const configure = (options, Passport) => {
         return Strategy.oAuth2(options);
       }
       default: {
-        if (options.hasOwnProperty('_verify')) {
+        if (Object.prototype.hasOwnProperty.call(options, '_verify')) {
           return options;
         }
 

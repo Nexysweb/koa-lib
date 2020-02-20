@@ -9,7 +9,7 @@ class Config {
   constructor(config={}, local=true, opts={}) {
     this.initEnv(local, opts);
     this.setup(config);
-  };
+  }
 
   initEnv(local, opts={}) {
     if (!local) {
@@ -74,7 +74,7 @@ class Config {
   parse(config) {
     const result = {};
     for (const key in config) {
-      if (config.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(config, key)) {
         let value = config[key];
 
         if (value.isEnvVar) {
