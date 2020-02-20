@@ -14,5 +14,6 @@ export interface SessionUser {
   id: number,
   email: string,
   permissions: string[],
-  urlRedirect?:string
+  urlRedirect?:string,
+  isAdmin?:boolean
 }
