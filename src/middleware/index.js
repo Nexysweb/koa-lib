@@ -43,13 +43,13 @@ export const isAuthenticated = (name, config={session: false}) => {
 export const authenticate = (name, verify) => passport.authenticate(name, verify);
 
 export const hasPermissions = permissions => async (ctx, next) => {
-  const { auth, permissions: perms } = ctx.state.user;
+  const { permissions: perms } = ctx.state.user;
 
   if (!Array.isArray(permissions)) {
     permissions = [permissions];
   }
 
-  const authorized = permissions.every(p => auth.includes(p) || perms.includes(p));
+  const authorized = permissions.every(p => perms.includes(p));
 
   if (authorized) {
     await next();
