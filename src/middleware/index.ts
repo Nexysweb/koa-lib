@@ -13,10 +13,7 @@ import * as Types from '../session/types';
 /* eslint-disable no-unused-vars */
 
 import { HTTP } from '@nexys/lib';
-
-
 export { Errors, Response, Validate, Request };
-
 
 /*** AUTH MIDDLEWARE ***/
 export const isBasicAuthenticated = (username:string, password:string) => basicAuth({name: username, pass: password});
