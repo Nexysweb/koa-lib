@@ -18,6 +18,8 @@ import { HTTP } from '@nexys/lib';
 export { Errors, Response, Validate, Request };
 
 
+const a = (b:string):number = 'sdf'
+
 /*** AUTH MIDDLEWARE ***/
 export const isBasicAuthenticated = (username:string, password:string) => basicAuth({name: username, pass: password});
 
