@@ -1,6 +1,6 @@
 {
   "name": "@nexys/koa-lib",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "scripts": {
     "lint": "tsc src/index.ts --pretty --noEmit && eslint src '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "rimraf dist && jest",
