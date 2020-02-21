@@ -2,8 +2,7 @@
   "name": "@nexys/koa-lib",
   "version": "1.5.2",
   "scripts": {
-    "t": "tsc --pretty",
-    "lint": "tsc src/index.ts --noEmit && eslint src '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lint": "tsc src/index.ts --pretty --noEmit && eslint src '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "rimraf dist && jest",
     "build": "rimraf dist && babel src/ --extensions \".js,.ts\" --out-dir dist/;rm dist/*.test.js"
   },
