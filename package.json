@@ -1,6 +1,6 @@
 {
   "name": "@nexys/koa-lib",
-  "version": "1.5.3",
+  "version": "1.5.6",
   "scripts": {
     "lint": "tsc src/index.ts --pretty --noEmit && eslint src '*/**/*.{js,ts,tsx}' --quiet --fix",
     "test": "rimraf dist && jest",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@nexys/lib": "^1.6.32",
+    "@nexys/lib": "^1.8.2",
     "@nexys/utils": "^3.5.13",
     "dotenv": "^8.2.0",
     "http-proxy": "^1.18.0",
