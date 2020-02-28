@@ -21,7 +21,7 @@ export const local = (options={}) => {
       throw new HTTP.Error('Please supply missing `app-token` for Log in', 500);
     }
 
-    const UserService = User.init(host, auth);
+    const UserService = new User(host, auth);
 
     handleLogin = async (username, password, ctx) => {
       return await UserService.logIn(username, password, ctx.state);
