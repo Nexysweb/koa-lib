@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@nexys/lib": "^1.8.0",
+    "@nexys/lib": "^1.8.2",
     "@nexys/utils": "^3.5.13",
     "dotenv": "^8.2.0",
     "http-proxy": "^1.18.0",

@@ -1148,10 +1148,10 @@
     dotenv "^8.1.0"
     request-promise-native "^1.0.8"
 
-"@nexys/lib@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@nexys/lib/-/lib-1.8.0.tgz#82088a9e359259de174227b23ae02b137e0f9f70"
-  integrity sha512-vgtWpNtWC5VhZ0P361i5Bq8W9xB6O1KUIRMp48ioRH2nedXYMvSTfporkg24QA0asNw83tdMqPu/RAdbs0Yelw==
+"@nexys/lib@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@nexys/lib/-/lib-1.8.2.tgz#1fa475a6ad4bf092e9b360ff24659d1d63a70229"
+  integrity sha512-r6iVRdM68gssc+AWwnzXHcgzMCEP4ncRW3chw22k7QAEDgnnHK27fvu2bffGzwsGlqF+8hFjWHBeUiP5Kz1LZg==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@hapi/joi" "^16.1.8"
