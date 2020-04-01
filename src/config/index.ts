@@ -35,7 +35,7 @@ class Config {
     */
   }
 
-  parseName(name, defaultValue:string = undefined) {
+  parseName(name: string, defaultValue:string | undefined = undefined) {
     let value = process.env[name];
     if (!value) { // undefined || null
       if (defaultValue) return defaultValue; // assumption: default value is already formatted
@@ -55,21 +55,14 @@ class Config {
     }
   }
 
-  parseEnvVar(envVar:any) {
+  parseEnvVar(envVar:{compose: any, name:string, defaultValue?: string, args:string[]}) {
     if (envVar.args) {
       // TODO: dependency graph
       const values = envVar.args.map(name => this.parseName(name));
       envVar.compose(...values);
     }
 
-    const { name } = envVar;
-    let defaultValue = null;
-
-    if (envVar.defaultValue) {
-      defaultValue = envVar.defaultValue;
-    }
-
-    return this.parseName(name, defaultValue);
+    return this.parseName(envVar.name, envVar.defaultValue);
   }
 
   parse(config) {

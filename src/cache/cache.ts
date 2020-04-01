@@ -1,9 +1,9 @@
 import Utils from '@nexys/utils';
 
 abstract class Cache {
-  path:string;
+  path:string | undefined;
 
-  constructor(path:string = undefined ) {
+  constructor(path:string | undefined = undefined ) {
     this.path = path; // NOTE: path for handling nested data
   }
 
@@ -27,7 +27,7 @@ abstract class Cache {
     throw new Error('Cache getter not implemented');
   }
 
-  async set(key:string, value: any, ttl:number = undefined):Promise<any>  {
+  async set(key:string, value: any, ttl:number | undefined = undefined):Promise<any>  {
     throw new Error('Cache setter not implemented');
   }
 

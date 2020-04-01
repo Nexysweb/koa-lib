@@ -35,6 +35,9 @@ class LocalCache extends Cache {
 
       // NOTE: constructor not async - https://gist.github.com/goloroden/c976971e5f42c859f64be3ad7fc6f4ed
       this.load();
+    } else {
+      this.persistent = false;
+      this.file = 'cache';
     }
   }
 
@@ -73,9 +76,11 @@ class LocalCache extends Cache {
     } else return false;
   }
 
-  async set(key:string, value:any, ttl:number = undefined):Promise<any> {
-    let result = false;
+  async set(key:string, value:any, ttl:number | undefined = undefined):Promise<any> {
     const data = this.serialize(value);
+  
+    let result:boolean = false;
+    
     if (ttl) {
       result = this.cache.set(key, data, ttl);
     } else {

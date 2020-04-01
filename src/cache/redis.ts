@@ -9,7 +9,8 @@ class RedisCache extends ServiceCache {
 
   constructor(...args) {
     const redis = args.shift(); // host, port, password
-    super(...args);
+    const { prefix, path } = redis;
+    super(prefix, path);
 
     const options = {
       ...redis,
@@ -38,7 +39,7 @@ class RedisCache extends ServiceCache {
     return this.deserialize(json);
   }
 
-  async set(key:string, value:any, ttl:number = undefined) {
+  async set(key:string, value:any, ttl:number | undefined = undefined) {
     try {
       const id = this.key(key);
       const length = ttl || this.ttl;
@@ -56,7 +57,7 @@ class RedisCache extends ServiceCache {
     return key;
   }
 
-  async extend(key:string, value:any, ttl:number = undefined) {
+  async extend(key:string, value:any, ttl:number | undefined = undefined) {
     const entry = await this.get(key);
     if (entry) {
       const newValue = {...entry, ...value};

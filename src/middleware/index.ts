@@ -19,7 +19,7 @@ export { Errors, Response, Validate, Request };
 export const isBasicAuthenticated = (username:string, password:string) => basicAuth({name: username, pass: password});
 
 // NOTE: disabling sessions (API server) http://www.passportjs.org/docs/authenticate/#disable-sessions
-export const isAuthenticated = (name:string = undefined, config:{session: boolean} = {session: false}) => {
+export const isAuthenticated = (name:string | undefined = undefined, config:{session: boolean} = {session: false}) => {
   // NOTE: we can add a custom callback in the place of `failureRedirect`: http://www.passportjs.org/docs/authenticate/#custom-callback
 
   // TODO: specify redirect if not logged in, see bottom of file

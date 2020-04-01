@@ -4,7 +4,7 @@ import Cache from './cache';
 class ServiceCache extends Cache {
   prefix: string;
 
-  constructor(prefix:string=undefined, path:string=undefined) {
+  constructor(prefix:string, path:string | undefined=undefined) {
     super(path);
 
     this.prefix = prefix; // NOTE: prefix = service name
