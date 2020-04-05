@@ -2,7 +2,7 @@
   "name": "@nexys/koa-lib",
   "version": "1.5.6",
   "scripts": {
-    "lint": "tsc src/index.ts --pretty --noEmit && eslint src '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lint": "tsc src/index.ts --pretty --noEmit",
     "test": "rimraf dist && jest",
     "build": "tsc --allowSyntheticDefaultImports --target esnext --outDir dist/"
   },
@@ -11,11 +11,15 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@nexys/lib": "^2.0.4",
+    "@nexys/lib": "^2.0.10",
     "@types/koa": "^2.11.3",
     "@types/koa-basic-auth": "^2.0.3",
+    "@types/koa-helmet": "^3.1.2",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa-mount": "^4.0.0",
     "@types/koa-passport": "^4.0.2",
     "@types/koa-router": "^7.4.0",
+    "@types/supertest": "^2.0.8",
     "dotenv": "^8.2.0",
     "http-proxy": "^1.18.0",
     "ioredis": "^4.14.1",
