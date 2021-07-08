@@ -7,7 +7,7 @@ import * as Session from './session';
 import * as App from './app';
 
 
-const exports = {
+const allExports = {
   Proxy,
   Auth,
   Middleware,
@@ -25,4 +25,4 @@ export {
   App
 };
 
-export default exports; 
+export default allExports; 

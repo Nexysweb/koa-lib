@@ -2,7 +2,7 @@ import Config from './index';
 
 import path from 'path';
 
-import EnvVar from './envVar';
+import EnvVar from './env-var';
 
 
 describe('local', () => {

@@ -1,9 +1,11 @@
-import path from 'path';
+import * as path from 'path';
 
 import Koa from 'koa';
 import Logger from 'koa-logger';
 import Helmet from 'koa-helmet';
-import Respond from 'koa-respond';
+
+// remove
+//import Respond from 'koa-respond';
 
 import Mount from 'koa-mount';
 
@@ -12,7 +14,7 @@ import * as Middleware from '../middleware';
 import * as Auth from '../auth';
 
 import { HTTP } from '@nexys/lib';
-
+import { IOptions, ISessionConfig} from '../types';//, ISession 
 
 const getRoutesPath = (production, prefix) => {
   const filepath = `${production ? '/dist' : '/src'}/routes`;
@@ -21,13 +23,13 @@ const getRoutesPath = (production, prefix) => {
 }
 
 // TODO: best way to make production flag available?
-export const routeHandler = (prefix, filepath, filename) => {
+export const routeHandler = (prefix:string, filepath:string, filename?:string):Koa.Middleware<Koa.ParameterizedContext<any, {}>> => {
   // NOTE: filepath is relative to root directory
-  const fullPath = path.join(process.cwd(), filepath, filename || prefix);
+  const fullPath:string = path.join(process.cwd(), filepath, filename || prefix);
   return Mount(`${prefix}`, require(fullPath).default);
 }
 
-
+/*
 function mount(prefix, middleware) {
   this.use(Mount(prefix, middleware));
 }
@@ -40,14 +42,24 @@ function routes(prefix, filepath, filename) {
   }
 
   this.use(routeHandler(prefix, filepath, filename));
+}*/
+
+
+const optionsDefault:IOptions = {
+  agent: false, // adds `'koa-useragent`
+  production: false, // to remove
+  auth: {strategies:[]},
+  messages:[]
 }
 
-export const init = (options={}) => {
+export const init = (options:IOptions=optionsDefault) => {
   const app = new Koa();
   app.context.production = options.production;
 
-  Object.defineProperty(app, 'mount', { value: mount });
-  Object.defineProperty(app, 'routes', { value: routes });
+  //Object.defineProperty(app, 'mount', { value: mount });
+  app.use(Mount);
+  //app.use(routeHandler(prefix))
+  //Object.defineProperty(app, 'routes', { value: routes });
   // TODO: nested routes via subApp = new Koa() => subApp.routes(...)
 
   /*** CORE MIDDLEWARE ***/
@@ -58,7 +70,7 @@ export const init = (options={}) => {
   }
 
   app.use(Helmet()); // NOTE: important security headers (https://github.com/venables/koa-helmet)
-  app.use(Respond()); // NOTE: middleware that adds useful methods: send => ok, notFound, badRequest
+  //app.use(Respond()); // NOTE: middleware that adds useful methods: send => ok, notFound, badRequest
 
   if (options.agent) {
     app.use(require('koa-useragent').userAgent);
@@ -73,12 +85,12 @@ export const init = (options={}) => {
 
 
   /*** SESSION ***/
-  let session = {};
+  
   if (options.session) {
     // NOTE: alternative approach -> no session (send login response with set-cookie header), cookie: jwt=..
-    session.config = Session.configure(options.session, options.production, !!options.auth);
+    const config:ISessionConfig = Session.configure(options.session, options.production, !!options.auth);
 
-    if (session.config.signed) {
+    if (config.signed) {
       const { signatureKeys } = options.session;
       if (!signatureKeys) {
         throw new HTTP.Error('Please provide keys for the cookie signature');
@@ -92,14 +104,21 @@ export const init = (options={}) => {
       app.keys = signatureKeys;
     }
 
-    session.middleware = require('koa-session2')(session.config);
+    const middleware = require('koa-session2')(config);
+    const session = {
+      config,
+      middleware
+    }
+
+
+    
     app.use(session.middleware); 
   }
   /*****************/
 
 
   /*** AUTHENTICATION ***/
-  if (options.auth) {
+  /*if (options.auth) {
     const Passport = require('koa-passport');
 
     const strategies = Auth.configure(options.auth, Passport); 
@@ -112,14 +131,14 @@ export const init = (options={}) => {
       // NOTE: setup default session strategy https://github.com/jaredhanson/passport/blob/2327a36e7c005ccc7134ad157b2f258b57aa0912/lib/strategies/session.js
       app.use(Passport.session()); // NOTE: sets session on request - req.user (express) => ctx.state.user (koa) <-> (serialize/deserialize)
     }
-  }
+  }*/
   /***********************/
 
 
   /*** WEBSOCKET ***/
-  if (options.websocket) {
-    options.websocket(app, session.middleware, session.config);
-  }
+  //if (options.websocket) {
+  //  options.websocket(app, session.middleware, session.config);
+  //}
   /*****************/
 
 

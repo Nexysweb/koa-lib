@@ -1,7 +1,7 @@
 class EnvVar {
   // TODO: constructor for two different types of envVar
 
-  static create(name, defaultValue) {
+  static create(name:string, defaultValue:any = undefined) {
     if (defaultValue !== undefined) {
       return {
         name,

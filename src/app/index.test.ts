@@ -32,7 +32,7 @@ describe('route handler', () => {
 
 describe('init', () => {
   test('default', () => {
-    const app = App.init({ agent: true });
+    const app = App.init({agent: true});
     expect(app.middleware.length).toBe(5);
   });
 

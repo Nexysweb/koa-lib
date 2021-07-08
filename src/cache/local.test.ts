@@ -43,7 +43,7 @@ describe('local cache', () => {
 
     const data2 = { hello: 'world'};
     cache.extend('test', data2);
-    result = cache.get('test', data2);
+    result = cache.get('test');
     expect(result).toEqual(Object.assign(data, data2));
   });
 

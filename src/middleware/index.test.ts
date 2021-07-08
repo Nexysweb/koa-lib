@@ -6,6 +6,7 @@ import request from 'supertest';
 import * as Middleware from './index';
 import * as App from '../app';
 
+import * as Type from '../types';
 
 test('Validate', () => {
   expect(typeof Middleware.Validate).toEqual('object');
@@ -19,17 +20,19 @@ test('routes', () => {
   expect(typeof Middleware.routes).toEqual('function');
 });
 
-
 describe('auth middleware', () => {
   let server = null;
   let cookie = null;
 
   beforeAll(async () => {
-    const session = {
+    const session:Type.ISession = {
       key: 'app_test',
       local: {
         persistent: false
-      }
+      },
+      duration: 5000,
+      signed: false,
+      signatureKeys: []
     };
 
     const options = {
@@ -42,10 +45,10 @@ describe('auth middleware', () => {
 
     const router = new Router();
     router.post('/login', bodyParser(), ctx => {
-      return Passport.authenticate('local', async (err, data) => {
+      return Passport.authenticate('local', async (_err, data) => {
         await ctx.login(data);
-        ctx.ok();
-      })(ctx);
+        //ctx.res('');
+      })(ctx, next);
     });
 
     router.get('/auth', Middleware.isAuthenticated(), ctx => ctx.body = ctx.session.passport.user);
@@ -56,14 +59,20 @@ describe('auth middleware', () => {
     router.get('/orerror', Middleware.or(Middleware.isAuthenticated(), Middleware.isBasicAuthenticated('user', 'pass')), ctx => { ctx.throw(400, 'Something went wrong'); });
     
     app.use(router.routes());
-    server = app.listen();
+    const server = app.listen();
 
     const response = await request(server).post('/login').send({ username: 'john.smith', password: '123456Aa' });
     cookie = response.headers['set-cookie'][0].split(' ')[0];
   });
 
   // NOTE: after all async?
-  afterAll(() => server.close());
+  afterAll(() => {
+    /* eslint-disable */
+    if(server !== null) {
+      /* tslint:disable */
+      server.close() // tslint:disable
+    }
+  });
 
   test('auth', async () => {
     const response = await request(server).get('/auth').set('Cookie', cookie);

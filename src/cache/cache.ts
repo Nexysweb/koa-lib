@@ -1,36 +1,37 @@
 import Utils from '@nexys/utils';
 
+abstract class Cache {
+  path:string | undefined;
 
-class Cache {
-  constructor(path=false) {
+  constructor(path:string | undefined = undefined ) {
     this.path = path; // NOTE: path for handling nested data
   }
 
-  getId(length) {
+  getId(length:number):string {
     return Utils.random.generateString(length);
   }
 
-  serialize(data) {
+  serialize(data:any):any {
     if (this.path) {
       return Utils.ds.get(this.path, data);
     } else return data;
   }
 
-  deserialize(data) {
+  deserialize(data:any):any {
     if (this.path) {
       return Utils.ds.nest({[this.path]: data});
     } else return data;
   }
 
-  get() {
+  get(key:string):any {
     throw new Error('Cache getter not implemented');
   }
 
-  set() {
+  async set(key:string, value: any, ttl:number | undefined = undefined):Promise<any>  {
     throw new Error('Cache setter not implemented');
   }
 
-  extend(key, value) {
+  extend(key:string, value:any) {
     const entry = this.get(key);
     if (entry) {
       const newValue = {...entry, ...value};
@@ -38,7 +39,7 @@ class Cache {
     } else return false;
   }
 
-  destroy() {
+  destroy(key:string) {
     throw new Error('Cache destroyer not implemented');
   }
 }

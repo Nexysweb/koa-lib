@@ -1,17 +1,18 @@
 import dotenv from 'dotenv';
 
-import EnvVar from './envVar';
+import EnvVar from './env-var';
 
 import Utils from '@nexys/utils';
 
 
 class Config {
+  vars:any;
   constructor(config={}, local=true, opts={}) {
     this.initEnv(local, opts);
     this.setup(config);
   }
 
-  initEnv(local, opts={}) {
+  initEnv(local:boolean, opts={}) {
     if (!local) {
       for (let [key, value] of Object.entries(process.env)) {
         process.env[key] = Utils.string.parseEnvVar(value);
@@ -34,14 +35,14 @@ class Config {
     */
   }
 
-  parseName(name, defaultValue) {
+  parseName(name: string, defaultValue:string | undefined = undefined) {
     let value = process.env[name];
     if (!value) { // undefined || null
       if (defaultValue) return defaultValue; // assumption: default value is already formatted
       else return null;
     }
 
-    if (isNaN(value)) {
+    if (isNaN(Number(<unknown>value))) {
       if (value === 'true') {
         return true;
       } else if (value === 'false') {
@@ -54,21 +55,14 @@ class Config {
     }
   }
 
-  parseEnvVar(envVar) {
+  parseEnvVar(envVar:{compose: any, name:string, defaultValue?: string, args:string[]}) {
     if (envVar.args) {
       // TODO: dependency graph
       const values = envVar.args.map(name => this.parseName(name));
       envVar.compose(...values);
     }
 
-    const { name } = envVar;
-    let defaultValue = null;
-
-    if (envVar.defaultValue) {
-      defaultValue = envVar.defaultValue;
-    }
-
-    return this.parseName(name, defaultValue);
+    return this.parseName(envVar.name, envVar.defaultValue);
   }
 
   parse(config) {
@@ -142,7 +136,7 @@ class Config {
     this.vars = this.parse(merged);
   };
 
-  get = key => Utils.ds.get(key, this.vars);
+  get = (key:string):any => Utils.ds.get(key, this.vars);
 }
 
 export default Config;

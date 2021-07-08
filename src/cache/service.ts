@@ -2,13 +2,15 @@ import Cache from './cache';
 
 
 class ServiceCache extends Cache {
-  constructor(prefix=false, path=false) {
+  prefix: string;
+
+  constructor(prefix:string, path:string | undefined=undefined) {
     super(path);
 
     this.prefix = prefix; // NOTE: prefix = service name
   }
 
-  key(id) {
+  key(id:string) {
     if (this.prefix) {
       return `${this.prefix}:${id}`;
     } else return id;

@@ -5,14 +5,16 @@ import NodeCache from 'node-cache';
 
 import Cache from './cache';
 
-
-fs.exists = path => fs.stat(path).catch(err => {
+const fileExists = (path:string):Promise<boolean> => fs.stat(path).then(_ => true).catch(err => {
   if (err.code === "ENOENT") return false;
   throw err;
 });
 
-
 class LocalCache extends Cache {
+  cache:NodeCache;
+  persistent:boolean;
+  file:string;
+
   constructor(...args) {
     // TODO: handle args.length
     const local = args.shift();
@@ -33,12 +35,15 @@ class LocalCache extends Cache {
 
       // NOTE: constructor not async - https://gist.github.com/goloroden/c976971e5f42c859f64be3ad7fc6f4ed
       this.load();
+    } else {
+      this.persistent = false;
+      this.file = 'cache';
     }
   }
 
-  async load(dir=process.cwd()) {
+  async load(dir:string=process.cwd()) {
     const filePath = path.join(dir, `${this.file}.json`);
-    const exists = await fs.exists(filePath);
+    const exists:boolean = await fileExists(filePath);
     if (exists) {
       const json = await fs.readFile(filePath, 'utf8');
       if (json) {
@@ -52,7 +57,7 @@ class LocalCache extends Cache {
     }
   }
 
-  async save(dir=process.cwd()) {
+  async save(dir:string=process.cwd()) {
     const keys = this.cache.keys();
     const data = this.cache.mget(keys);
 
@@ -63,7 +68,7 @@ class LocalCache extends Cache {
     console.log(`Cache saved to file at ${fpath}`);
   }
 
-  get(key) {
+  get(key:string) {
     if (this.cache.has(key)) {
       const data = this.cache.get(key);
       if (!data) return false;
@@ -71,10 +76,12 @@ class LocalCache extends Cache {
     } else return false;
   }
 
-  async set(key, value, ttl) {
-    let result = false;
+  async set(key:string, value:any, ttl:number | undefined = undefined):Promise<any> {
     const data = this.serialize(value);
-    if (ttl && typeof ttl === 'number') {
+  
+    let result:boolean = false;
+    
+    if (ttl) {
       result = this.cache.set(key, data, ttl);
     } else {
       result = this.cache.set(key, data);
@@ -88,7 +95,7 @@ class LocalCache extends Cache {
     else return false;
   }
 
-  destroy(key) {
+  destroy(key:string) {
     // NOTE: supports single key or array of keys
     return this.cache.del(key);
   }

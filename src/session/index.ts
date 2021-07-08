@@ -3,11 +3,11 @@
 **/
 import Local from './local';
 import Redis from './redis';
-
+import { ISession, ISessionConfig } from '../types';
 
 // NOTE: taken from koa-session2 https://github.com/Secbone/koa-session2/blob/master/index.js
 // tests are available here: https://github.com/Secbone/koa-session2/blob/master/test/test.js
-const middleware = (opts={}) => {
+const middleware = (opts:{key:string, store:any}) => {
   const { key='koa:sess', store } = opts;
 
   if (!store) {
@@ -73,7 +73,7 @@ const middleware = (opts={}) => {
   }
 }
 
-const configure = (session, production=false, passport=false) => {
+const configure = (session:ISession, production=false, passport=false):ISessionConfig => {
   // TODO for other user cases: setting token as cookies
   // https://medium.com/@yuliaoletskaya/can-jwt-be-used-for-sessions-4164d124fe2
   const { key, duration=(24*60), signed, httpOnly=true, local={}, redis={} } = session;
